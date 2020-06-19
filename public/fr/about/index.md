@@ -1,0 +1,3 @@
+# À propos de LoveIt
+
+岂能尽如人意，但求无愧我心。
