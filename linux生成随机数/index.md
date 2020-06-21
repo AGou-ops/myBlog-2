@@ -1,4 +1,4 @@
-# Linux生成随机数
+# Linux 生成随机数
 
 
 [TOC]
