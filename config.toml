@@ -133,7 +133,7 @@ theme = "LoveIt"
           # title shown in home page (HTML format is supported)
           title = ""
           # subtitle shown in home page
-          subtitle = "Welcome to AGou's Blog-2"
+          subtitle = "Welcome to AGou's Blog-2."
           # whether to use typeit animation for subtitle
           typeit = true
           # whether to show social links
@@ -317,8 +317,8 @@ theme = "LoveIt"
         absoluteURL = false
         [languages.zh-cn.params.search.algolia]
           index = "index.zh-cn"
-          appID = "PASDMWALPK"
-          searchKey = "b42948e51daaa93df92381c8e2ac0f93"
+          appID = "5M8VQRD7W9"
+          searchKey = "2fcdbd0ce638664e7a28cc64939603b9"
       # 主页信息设置
       [languages.zh-cn.params.home]
         # RSS 文章数目
@@ -333,13 +333,13 @@ theme = "LoveIt"
           # 主页显示的网站标题 (支持 HTML 格式)
           title = ""
           # 主页显示的网站副标题
-          subtitle = "Welcome to AGou's Blog-2"
+          subtitle = "Welcome to AGou's Blog-2."
           # 是否为副标题显示打字机动画
           typeit = true
           # 是否显示社交账号
           social = true
           # 免责声明 (支持 HTML 格式)
-          disclaimer = ""
+          disclaimer = "岂能尽如人意，但求无愧我心。"
         # 主页文章列表
         [languages.zh-cn.params.home.posts]
           enable = true
@@ -656,7 +656,7 @@ theme = "LoveIt"
       post = ""
       # whether to use typeit animation for title name
       # 是否为标题显示打字机动画
-      typeit = true
+      typeit = false
 
   # Footer config
   # 页面底部信息配置
