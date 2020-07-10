@@ -6,10 +6,10 @@ draft: false
 tags: ["preview", "shortcodes"]
 categories: ["docs", "shortcodes", "index"]
 author: "AGou"
-menu:
-  main:
-    parent: "docs"
-    weight: 2
+# menu:
+#   main:
+#     parent: "docs"
+#     weight: 2
 ---
 
 
