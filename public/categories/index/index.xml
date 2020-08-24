@@ -1,0 +1,38 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>index - 分类 - AGou&#39;s Blog-2</title>
+        <link>http://x.agou-ops.top/categories/index/</link>
+        <description>index - 分类 - AGou&#39;s Blog-2</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 04 Mar 2019 16:01:23 &#43;0800</lastBuildDate><atom:link href="http://x.agou-ops.top/categories/index/" rel="self" type="application/rss+xml" /><item>
+    <title>Shortcodes Preview</title>
+    <link>http://x.agou-ops.top/shortcodes-preview/</link>
+    <pubDate>Mon, 04 Mar 2019 16:01:23 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>http://x.agou-ops.top/shortcodes-preview/</guid>
+    <description><![CDATA[<h2 id="what-a-shortcode-is">What a Shortcode is</h2>
+<p>Hugo loves Markdown because of its simple content format, but there are times when Markdown falls short. Often, content authors are forced to add raw HTML (e.g., video <code>&lt;iframes&gt;</code>) to Markdown content. We think this contradicts the beautiful simplicity of Markdown&rsquo;s syntax.</p>
+<p>Hugo created <strong>shortcodes</strong> to circumvent these limitations.</p>
+<p>A shortcode is a simple snippet inside a content file that Hugo will render using a predefined template. Note that shortcodes will not work in template files. If you need the type of drop-in functionality that shortcodes provide but in a template, you most likely want a [partial template][partials] instead.</p>
+<p>In addition to cleaner Markdown, shortcodes can be updated any time to reflect new classes, techniques, or standards. At the point of site generation, Hugo shortcodes will easily merge in your changes. You avoid a possibly complicated search and replace operation.</p>
+<p>More details: <a href="https://gohugo.io/content-management/shortcodes/">https://gohugo.io/content-management/shortcodes/</a></p>]]></description>
+</item><item>
+    <title>Image Preview</title>
+    <link>http://x.agou-ops.top/image-preview/</link>
+    <pubDate>Sun, 03 Mar 2019 16:01:23 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>http://x.agou-ops.top/image-preview/</guid>
+    <description><![CDATA[<p>Thanks for <a href="https://github.com/liwenyip/hugo-easy-gallery" target="_blank" rel="noopener noreffer">liwenyip/hugo-easy-gallery</a> &amp; <a href="https://github.com/xianmin/hugo-theme-jane/pull/48" target="_blank" rel="noopener noreffer">Zebradil · Pull Request #48</a> .</p>
+<p>Now, we could use <code>{{&lt; gallery &gt;}}</code> shortcode in hugo-theme-jane.</p>
+<h2 id="normal-image">Normal Image</h2>
+<p>This is an image in <code>static/image</code> folder.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-markdown" data-lang="markdown">![<span class="nt">This is an image in `static/image` folder.</span>](<span class="na">https://agou-images.oss-cn-qingdao.aliyuncs.com/violet-evergarden/Screenshot_2020-03-29-21-40-19.png</span>)
+</code></pre></td></tr></table>
+</div>
+</div><p></p>]]></description>
+</item></channel>
+</rss>

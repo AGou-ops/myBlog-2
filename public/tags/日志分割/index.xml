@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>日志分割 - 标签 - AGou&#39;s Blog-2</title>
+        <link>http://x.agou-ops.top/tags/%E6%97%A5%E5%BF%97%E5%88%86%E5%89%B2/</link>
+        <description>日志分割 - 标签 - AGou&#39;s Blog-2</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 22 Jun 2020 08:45:13 &#43;0800</lastBuildDate><atom:link href="http://x.agou-ops.top/tags/%E6%97%A5%E5%BF%97%E5%88%86%E5%89%B2/" rel="self" type="application/rss+xml" /><item>
+    <title>Linux 日志分割工具-split和logrotate</title>
+    <link>http://x.agou-ops.top/linux-%E6%97%A5%E5%BF%97%E5%88%86%E5%89%B2%E5%B7%A5%E5%85%B7/</link>
+    <pubDate>Mon, 22 Jun 2020 08:45:13 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>http://x.agou-ops.top/linux-%E6%97%A5%E5%BF%97%E5%88%86%E5%89%B2%E5%B7%A5%E5%85%B7/</guid>
+    <description><![CDATA[<p>本文主要介绍Linux系统下的日志分割工具，<code>Split</code> 和 <code>Logrotate</code>。</p>
+<h2 id="split">Split</h2>
+<p>Linux 系统自带简单日志文件分割工具。</p>]]></description>
+</item></channel>
+</rss>
