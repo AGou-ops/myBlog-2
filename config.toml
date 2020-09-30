@@ -56,11 +56,11 @@ theme = "LoveIt"
         title = ""
         weight = 3
       [[languages.en.menu.main]]
-        identifier = "documentation"
+        identifier = "Anime"
         pre = ""
         post = ""
-        name = "Docs"
-        url = "/categories/documentation/"
+        name = "Anime"
+        url = "/Anime/"
         title = ""
         weight = 4
       [[languages.en.menu.main]]
@@ -257,10 +257,11 @@ theme = "LoveIt"
         title = ""
         weight = 3
       [[languages.zh-cn.menu.main]]
-        identifier = "documentation"
+        identifier = "Anime"
         pre = ""
-        name = "文档"
-        url = "/categories/documentation/"
+        post = ""
+        name = "Anime"
+        url = "/Anime/"
         title = ""
         weight = 4
       [[languages.zh-cn.menu.main]]
