@@ -12,7 +12,7 @@ author: "Typora"
 
 # weight: 1
 # menu: "main"
-comment: true
+# comment: true
 toc: true
 autoCollapseToc: true
 contentCopyright: false

@@ -81,13 +81,13 @@ theme = "LoveIt"
         weight = 6
     [languages.en.params]
       # site description
-      description = "About LoveIt Theme"
+      description = "About Me"
       # site keywords
-      keywords = ["Theme", "Hugo"]
+      keywords = ["AGou-ops", "About"]
       # App icon config
       [languages.en.params.app]
         # optional site title override for the app when added to an iOS home screen or Android launcher
-        title = "LoveIt"
+        title = "AGou's Blog-2."
         # whether to omit favicon resource links
         noFavicon = false
         # modern SVG favicon to use in place of older style .png and .ico files
@@ -282,13 +282,13 @@ theme = "LoveIt"
         weight = 6
     [languages.zh-cn.params]
       # 网站描述
-      description = "关于 LoveIt 主题"
+      description = "关于博主"
       # 网站关键词
-      keywords = ["Theme", "Hugo"]
+      keywords = ["AGou-ops", "About"]
       # 应用图标配置
       [languages.zh-cn.params.app]
         # 当添加到 iOS 主屏幕或者 Android 启动器时的标题, 覆盖默认标题
-        title = "LoveIt"
+        title = "AGou's Blog-2."
         # 是否隐藏网站图标资源链接
         noFavicon = false
         # 更现代的 SVG 网站图标, 可替代旧的 .png 和 .ico 文件
@@ -665,7 +665,7 @@ theme = "LoveIt"
     enable = true
     # Custom content (HTML format is supported)
     # 自定义内容 (支持 HTML 格式)
-    custom = ''
+    custom = '<a href="https://agou-ops.github.io" target="_blank" rel="noopener noreferrer" style="color:red;">【AGou-ops.top】</a> 备份站点'
     # whether to show Hugo and theme info
     # 是否显示 Hugo 和主题信息
     hugo = true
@@ -677,7 +677,7 @@ theme = "LoveIt"
     author = true
     # site creation time
     # 网站创立年份
-    since = 2019
+    since = 2018
     # ICP info only in China (HTML format is supported)
     # ICP 备案信息，仅在中国使用 (支持 HTML 格式)
     icp = "鲁ICP备19050296号-2"
@@ -690,7 +690,7 @@ theme = "LoveIt"
   [params.section]
     # special amount of posts in each section page
     # section 页面每页显示文章数量
-    paginate = 20
+    paginate = 30
     # date format (month and day)
     # 日期格式 (月和日)
     dateFormat = "01-02"
@@ -722,10 +722,10 @@ theme = "LoveIt"
     hiddenFromSearch = false
     # whether to enable twemoji
     # 是否使用 twemoji
-    twemoji = false
+    twemoji = true
     # whether to enable lightgallery
     # 是否使用 lightgallery
-    lightgallery = false
+    lightgallery = true
     # whether to enable the ruby extended syntax
     # 是否使用 ruby 扩展语法
     ruby = true
@@ -829,7 +829,7 @@ theme = "LoveIt"
       Renren = false
       Myspace = false
       Blogger = false
-      Baidu = false
+      Baidu = true
       Odnoklassniki = false
       Evernote = false
       Skype = false
@@ -944,7 +944,7 @@ theme = "LoveIt"
   [params.typeit]
     # typing speed between each step (measured in milliseconds)
     # 每一步的打字速度 (单位是毫秒)
-    speed = 100
+    speed = 80
     # blinking speed of the cursor (measured in milliseconds)
     # 光标的闪烁速度 (单位是毫秒)
     cursorSpeed = 1000
