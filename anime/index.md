@@ -5,9 +5,12 @@
 
 > **变更日志：**
 >
-> - 2020年10月01日：初始化表格；
+> - 2020年10月01日：初始化表格、增加序号至`39`；
+> - 2020年11月13日：增加喜好标签，更新序号至`51`；
 
-## 二〇二〇年
+# 二〇二〇年
+
+**喜好标签（由高到低）：<font color='red'>#日常   #萌系   #搞笑   #轻百合   #治愈 (不是致郁)    #魔法 </font>**
 
 | 序号 |    时间    |                            动漫名                            |                         最喜欢的角色                         |                            制片方                            |
 | :--: | :--------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
@@ -38,7 +41,7 @@
 |  24  | 2020/07/23 |  [《悠哉日常大王》](https://zh.moegirl.org.cn/悠哉日常大王)  | [宫内莲华](https://zh.moegirl.org.cn/宫内莲华)(喵帕斯)、[越谷夏海](https://zh.moegirl.org.cn/越谷夏海) |   [ SILVER LINK.](https://zh.moegirl.org.cn/SILVER_LINK.)    |
 |  25  | 2020/07/27 | [《怕痛的我，把防御力点满就对了》](https://zh.moegirl.org.cn/怕痛的我，把防御力点满就对了) |                            梅普露                            |   [ SILVER LINK.](https://zh.moegirl.org.cn/SILVER_LINK.)    |
 |  26  | 2020/08/06 |     [《NEW GAME!》](https://zh.moegirl.org.cn/NEW_GAME!)     | [泷本一二三](https://zh.moegirl.org.cn/泷本一二三)**、**[饭岛结音](https://zh.moegirl.org.cn/饭岛结音)(关西腔i了)、[樱宁宁](https://zh.moegirl.org.cn/樱宁宁)(宁宁鸡) |        [动画工房](https://zh.moegirl.org.cn/动画工房)        |
-|  27  | 2020/08/10 |    [《Slow Start》](https://zh.moegirl.org.cn/Slow_Start)    | [十仓荣依子](https://zh.moegirl.org.cn/十仓荣依子)、[千石冠](https://zh.moegirl.org.cn/千石冠)、[ 一之濑花名](https://zh.moegirl.org.cn/一之濑花名) 、 [百地玉手](https://zh.moegirl.org.cn/百地玉手) | [A-1 Pictures](https://zh.moegirl.org.cn/A-1_Pictures)→[CloverWorks](https://zh.moegirl.org.cn/CloverWorks)[[1\]](https://zh.moegirl.org.cn/Slow_Start#cite_note-1) [芳文社](https://zh.moegirl.org.cn/芳文社) |
+|  27  | 2020/08/10 |    [《Slow Start》](https://zh.moegirl.org.cn/Slow_Start)    | [十仓荣依子](https://zh.moegirl.org.cn/十仓荣依子)、[千石冠](https://zh.moegirl.org.cn/千石冠)、[ 一之濑花名](https://zh.moegirl.org.cn/一之濑花名) 、 [百地玉手](https://zh.moegirl.org.cn/百地玉手) | [A-1 Pictures](https://zh.moegirl.org.cn/A-1_Pictures)→[CloverWorks](https://zh.moegirl.org.cn/CloverWorks)[1] [芳文社](https://zh.moegirl.org.cn/芳文社) |
 |  28  | 2020/08/15 |   [《Comic Girls》](https://zh.moegirl.org.cn/Comic_Girls)   |    [萌田薰子](https://zh.moegirl.org.cn/萌田薰子)(小混沌)    | [Nexus](https://zh.moegirl.org.cn/Nexus) [芳文社](https://zh.moegirl.org.cn/芳文社) |
 |  29  | 2020/08/19 |    [《恋爱小行星》](https://zh.moegirl.org.cn/恋爱小行星)    |      [木之幡米拉](https://zh.moegirl.org.cn/木之幡米拉)      | [动画工房](https://zh.moegirl.org.cn/动画工房)  [芳文社](https://zh.moegirl.org.cn/芳文社) |
 |  30  | 2020/08/22 |      [《街角魔族》](https://zh.moegirl.org.cn/街角魔族)      |    [吉田优子](https://zh.moegirl.org.cn/吉田优子)(夏美子)    | [J.C.STAFF](https://zh.moegirl.org.cn/J.C.STAFF)  [芳文社](https://zh.moegirl.org.cn/芳文社) |
@@ -48,16 +51,28 @@
 |  34  | 2020/09/08 |        [《citrus》](https://zh.moegirl.org.cn/citrus)        | [蓝原柚子](https://zh.moegirl.org.cn/蓝原柚子)、[蓝原芽衣](https://zh.moegirl.org.cn/蓝原芽衣) |        [Passione](https://zh.moegirl.org.cn/Passione)        |
 |  35  | 2020/09/15 |   [《Anne Happy♪》](https://zh.moegirl.org.cn/Anne_Happy)    |        [花小泉杏](https://zh.moegirl.org.cn/花小泉杏)        |    [SILVER LINK.](https://zh.moegirl.org.cn/SILVER_LINK.)    |
 |  36  | 2020/09/24 | [《放学后海堤日记》](https://zh.moegirl.org.cn/放学后海堤日记) |        [鹤木阳渚](https://zh.moegirl.org.cn/鹤木阳渚)        |        [动画工房](https://zh.moegirl.org.cn/动画工房)        |
-|  37  | 2020/09/25 | [《请问您今天要来点兔子吗？》](https://zh.moegirl.org.cn/请问您今天要来点兔子吗？) | [桐间纱路](https://zh.moegirl.org.cn/桐间纱路)(纱路酱)、宇治松千夜](https://zh.moegirl.org.cn/宇治松千夜) |          [Koi](https://zh.moegirl.org.cn/Koi)(原作)          |
+|  37  | 2020/09/25 | [《请问您今天要来点兔子吗？》](https://zh.moegirl.org.cn/请问您今天要来点兔子吗？) | [桐间纱路](https://zh.moegirl.org.cn/桐间纱路)(纱路酱)、[宇治松千夜](https://zh.moegirl.org.cn/宇治松千夜) |          [Koi](https://zh.moegirl.org.cn/Koi)(原作)          |
 |  38  | 2020/09/25 | [《宇崎酱想要玩耍！》](https://zh.moegirl.org.cn/宇崎酱想要玩耍！) |         [宇崎花 ](https://zh.moegirl.org.cn/宇崎花)          |                                                              |
 |  39  | 2020/09/29 |    [《雏子的笔记》](https://zh.moegirl.org.cn/雏子的笔记)    | [夏川玖井菜](https://zh.moegirl.org.cn/夏川玖井菜)(奇怪的爱好：喜欢吃书) |        [Passione](https://zh.moegirl.org.cn/Passione)        |
+|  40  | 2020/10/09 |      [《摇曳百合》](https://zh.moegirl.org.cn/摇曳百合)      | [岁纳京子](https://zh.moegirl.org.cn/岁纳京子)、[赤座灯里](https://zh.moegirl.org.cn/赤座灯里) | [动画工房](https://zh.moegirl.org.cn/动画工房)、[TYO ANIMATIONS](https://zh.moegirl.org.cn/TYO_ANIMATIONS)、[TYO ANIMATIONS](https://zh.moegirl.org.cn/TYO_ANIMATIONS) |
+|  41  | 2020/10/15 |      [《三者三叶》](https://zh.moegirl.org.cn/三者三叶)      |        [西川叶子](https://zh.moegirl.org.cn/西川叶子)        |        [动画工房](https://zh.moegirl.org.cn/动画工房)        |
+|  42  | 2020/10/16 | [《若叶女孩》](https://zh.moegirl.org.cn/若叶女孩)（泡面番） |       [ 小桥若叶](https://zh.moegirl.org.cn/小桥若叶)        |           [Nexus](https://zh.moegirl.org.cn/Nexus)           |
+|  43  | 2020/10/17 | [《牵牛花与加濑同学》](https://zh.moegirl.org.cn/牵牛花与加濑同学) | [山田结衣](https://zh.moegirl.org.cn/index.php?title=山田结衣&action=edit&redlink=1)[加濑友香](https://zh.moegirl.org.cn/加濑友香) |                            ZEXCS                             |
+|  44  | 2020/10/21 |   [《Anima Yell!》](https://zh.moegirl.org.cn/Anima_Yell!)   |        [猿渡宇希](https://zh.moegirl.org.cn/猿渡宇希)        |        [动画工房](https://zh.moegirl.org.cn/动画工房)        |
+|  45  | 2020/10/24 | [《一个人的OO小日子》](https://zh.moegirl.org.cn/%E4%B8%80%E4%B8%AA%E4%BA%BA%E7%9A%84OO%E5%B0%8F%E6%97%A5%E5%AD%90) |        [一里波知](https://zh.moegirl.org.cn/一里波知)        |             [C2C](https://zh.moegirl.org.cn/C2C)             |
+|  46  | 2020/10/25 | [《公主连结Re:Dive》](https://zh.moegirl.org.cn/公主连结Re:Dive) | [佩可莉姆](https://zh.moegirl.org.cn/佩可莉姆)、[凯露](https://zh.moegirl.org.cn/百地希留耶) | [CygamesPictures](https://zh.moegirl.org.cn/CygamesPictures) |
+|  47  | 2020/10/30 | [《我家女仆有够烦！》](https://zh.moegirl.org.cn/我家女仆有够烦!) |      **[高梨米夏](https://zh.moegirl.org.cn/高梨米夏)**      |        [动画工房](https://zh.moegirl.org.cn/动画工房)        |
+|  48  | 2020/10/30 | [《前进吧，登山少女》](https://zh.wikipedia.org/wiki/%E5%89%8D%E9%80%B2%E5%90%A7%EF%BC%81%E7%99%BB%E5%B1%B1%E5%B0%91%E5%A5%B3)(泡面番) | [仓上日向](https://zh.moegirl.org.cn/仓上日向)、[雪村葵](https://zh.moegirl.org.cn/雪村葵) | [しろ](https://zh.moegirl.org.cn/Siro(漫画家))（原作） • [8-bit](https://zh.moegirl.org.cn/8-bit)（动画制作） |
+|  49  | 2020/11/02 | [《春原庄的管理员小姐》](https://zh.moegirl.org.cn/春原庄的管理员小姐) | 春原彩花（管理员，实在是。）、[雪本柚子](https://zh.moegirl.org.cn/雪本柚子)（学生会长） |    [SILVER LINK.](https://zh.moegirl.org.cn/SILVER_LINK.)    |
+|  50  | 2020/11/06 | [《女高中生的虚度日常》](https://zh.moegirl.org.cn/女高中生的虚度日常) |   [鹭宫诗织](https://zh.moegirl.org.cn/鹭宫诗织)（机器人）   |        [Passione](https://zh.moegirl.org.cn/Passione)        |
+|  51  | 2020/11/07 | [《笨女孩》](https://zh.moegirl.org.cn/单蠢女孩)（又名：单蠢女孩） |      [隅野沙耶香](https://zh.moegirl.org.cn/隅野沙耶香)      |        [diomedéa](https://zh.moegirl.org.cn/Diomedea)        |
 
 ## 其他
 
 ##### 年度最喜欢的声优(及所配音角色)：
 
-- [石川由依](https://zh.moegirl.org.cn/%E7%9F%B3%E5%B7%9D%E7%94%B1%E4%BE%9D)：薇尔莉特·伊芙加登、高砂智惠；
-- [子安武人](https://zh.moegirl.org.cn/%E5%AD%90%E5%AE%89%E6%AD%A6%E4%BA%BA)：克劳迪亚·霍金斯；
+- [石川由依](https://zh.moegirl.org.cn/石川由依)：薇尔莉特·伊芙加登、高砂智惠；
+- [子安武人](https://zh.moegirl.org.cn/子安武人)：克劳迪亚·霍金斯；
 
 ##### 年度最喜欢的OP/ED/OST
 
