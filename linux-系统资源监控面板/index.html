@@ -178,160 +178,160 @@ tar xf wtf_0.30.0_linux_amd64.tar.gz
 </span><span class=lnt>152
 </span><span class=lnt>153
 </span><span class=lnt>154
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-yaml data-lang=yaml><span class=k>wtf</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=k>colors</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=k>background</span><span class=p>:</span><span class=w> </span>black<span class=w>
-</span><span class=w>    </span><span class=k>border</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>focusable</span><span class=p>:</span><span class=w> </span>darkslateblue<span class=w>
-</span><span class=w>      </span><span class=k>focused</span><span class=p>:</span><span class=w> </span>orange<span class=w>
-</span><span class=w>      </span><span class=k>normal</span><span class=p>:</span><span class=w> </span>gray<span class=w>
-</span><span class=w>    </span><span class=k>checked</span><span class=p>:</span><span class=w> </span>yellow<span class=w>
-</span><span class=w>    </span><span class=k>highlight</span><span class=p>:</span><span class=w> 
-</span><span class=w>      </span><span class=k>fore</span><span class=p>:</span><span class=w> </span>black<span class=w>
-</span><span class=w>      </span><span class=k>back</span><span class=p>:</span><span class=w> </span>gray<span class=w>
-</span><span class=w>    </span><span class=k>rows</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>even</span><span class=p>:</span><span class=w> </span>yellow<span class=w>
-</span><span class=w>      </span><span class=k>odd</span><span class=p>:</span><span class=w> </span>white<span class=w>
-</span><span class=w>  </span><span class=k>grid</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=k>columns</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=m>40</span><span class=p>,</span><span class=w> </span><span class=m>35</span><span class=p>,</span><span class=w> </span><span class=m>35</span><span class=p>,</span><span class=w> </span><span class=m>55</span><span class=p>]</span><span class=w>
-</span><span class=w>    </span><span class=k>rows</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=m>10</span><span class=p>,</span><span class=w> </span><span class=m>10</span><span class=p>,</span><span class=w> </span><span class=m>10</span><span class=p>,</span><span class=w> </span><span class=m>10</span><span class=p>,</span><span class=w> </span><span class=m>4</span><span class=p>]</span><span class=w>
-</span><span class=w>  </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>  </span><span class=k>openFileUtil</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;open&#34;</span><span class=w>
-</span><span class=w>  </span><span class=k>mods</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=k>digitalclock</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>color</span><span class=p>:</span><span class=w> </span>red<span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>font</span><span class=p>:</span><span class=w> </span>digitalfont<span class=w>
-</span><span class=w>      </span><span class=k>hourFormat</span><span class=p>:</span><span class=w> </span><span class=m>24</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>      </span><span class=k>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;big clock&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>type</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;digitalclock&#34;</span><span class=w>
-</span><span class=w>    </span><span class=k>world_time</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;World Time&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>type</span><span class=p>:</span><span class=w> </span>clocks<span class=w>
-</span><span class=w>      </span><span class=k>colors</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>rows</span><span class=p>:</span><span class=w>
-</span><span class=w>          </span><span class=k>even</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;lightblue&#34;</span><span class=w>
-</span><span class=w>          </span><span class=k>odd</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;white&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>locations</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>UTC</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Etc/UTC&#34;</span><span class=w>
-</span><span class=w>        </span><span class=k>London</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Europe/London&#34;</span><span class=w>
-</span><span class=w>        </span><span class=k>Berlin</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Europe/Berlin&#34;</span><span class=w>
-</span><span class=w>        </span><span class=k>New_York</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;America/New_York&#34;</span><span class=w>
-</span><span class=w>        </span><span class=k>China</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Asia/Shanghai&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>15</span><span class=w>
-</span><span class=w>      </span><span class=k>sort</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;alphabetical&#34;</span><span class=w>
-</span><span class=w>    </span><span class=k>battery</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>type</span><span class=p>:</span><span class=w> </span>power<span class=w>
-</span><span class=w>      </span><span class=k>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;⚡️&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>15</span><span class=w>
-</span><span class=w>    </span><span class=k>todolist</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>type</span><span class=p>:</span><span class=w> </span>todo<span class=w>
-</span><span class=w>      </span><span class=k>checkedIcon</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;X&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>colors</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>checked</span><span class=p>:</span><span class=w> </span>gray<span class=w>
-</span><span class=w>        </span><span class=k>highlight</span><span class=p>:</span><span class=w>
-</span><span class=w>          </span><span class=k>fore</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;black&#34;</span><span class=w>
-</span><span class=w>          </span><span class=k>back</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;orange&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>filename</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;todo.yml&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>3600</span><span class=w>
-</span><span class=w>    </span><span class=k>ip</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>type</span><span class=p>:</span><span class=w> </span>ipinfo<span class=w>
-</span><span class=w>      </span><span class=k>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;My IP&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>colors</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;lightblue&#34;</span><span class=w>
-</span><span class=w>        </span><span class=k>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;white&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>150</span><span class=w>
-</span><span class=w>    </span><span class=k>prettyweather</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>city</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;临沂&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>300</span><span class=w>
-</span><span class=w>      </span><span class=k>unit</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;m&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>view</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
-</span><span class=w>      </span><span class=k>language</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;en&#34;</span><span class=w>
-</span><span class=w>    </span><span class=k>security</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>3600</span><span class=w>
-</span><span class=w>    </span><span class=k>docker</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>type</span><span class=p>:</span><span class=w> </span>docker<span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>labelColor</span><span class=p>:</span><span class=w> </span>lightblue<span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>    </span><span class=k>resources</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>type</span><span class=p>:</span><span class=w> </span>resourceusage<span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>    </span><span class=k>uptime</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>type</span><span class=p>:</span><span class=w> </span>cmdrunner<span class=w>
-</span><span class=w>      </span><span class=k>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;&#34;</span><span class=p>]</span><span class=w>
-</span><span class=w>      </span><span class=k>cmd</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;uptime&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>4</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>30</span><span class=w>
-</span><span class=w>    </span><span class=k>disks</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=k>type</span><span class=p>:</span><span class=w> </span>cmdrunner<span class=w>
-</span><span class=w>      </span><span class=k>cmd</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;df&#34;</span><span class=w>
-</span><span class=w>      </span><span class=k>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;-h&#34;</span><span class=p>]</span><span class=w>
-</span><span class=w>      </span><span class=k>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>      </span><span class=k>position</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=k>top</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
-</span><span class=w>        </span><span class=k>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>        </span><span class=k>width</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
-</span><span class=w>      </span><span class=k>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>3600</span><span class=w>
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-yaml data-lang=yaml><span class=nt>wtf</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>colors</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>background</span><span class=p>:</span><span class=w> </span><span class=l>black</span><span class=w>
+</span><span class=w>    </span><span class=nt>border</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>focusable</span><span class=p>:</span><span class=w> </span><span class=l>darkslateblue</span><span class=w>
+</span><span class=w>      </span><span class=nt>focused</span><span class=p>:</span><span class=w> </span><span class=l>orange</span><span class=w>
+</span><span class=w>      </span><span class=nt>normal</span><span class=p>:</span><span class=w> </span><span class=l>gray</span><span class=w>
+</span><span class=w>    </span><span class=nt>checked</span><span class=p>:</span><span class=w> </span><span class=l>yellow</span><span class=w>
+</span><span class=w>    </span><span class=nt>highlight</span><span class=p>:</span><span class=w> 
+</span><span class=w>      </span><span class=nt>fore</span><span class=p>:</span><span class=w> </span><span class=l>black</span><span class=w>
+</span><span class=w>      </span><span class=nt>back</span><span class=p>:</span><span class=w> </span><span class=l>gray</span><span class=w>
+</span><span class=w>    </span><span class=nt>rows</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>even</span><span class=p>:</span><span class=w> </span><span class=l>yellow</span><span class=w>
+</span><span class=w>      </span><span class=nt>odd</span><span class=p>:</span><span class=w> </span><span class=l>white</span><span class=w>
+</span><span class=w>  </span><span class=nt>grid</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>columns</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=m>40</span><span class=p>,</span><span class=w> </span><span class=m>35</span><span class=p>,</span><span class=w> </span><span class=m>35</span><span class=p>,</span><span class=w> </span><span class=m>55</span><span class=p>]</span><span class=w>
+</span><span class=w>    </span><span class=nt>rows</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=m>10</span><span class=p>,</span><span class=w> </span><span class=m>10</span><span class=p>,</span><span class=w> </span><span class=m>10</span><span class=p>,</span><span class=w> </span><span class=m>10</span><span class=p>,</span><span class=w> </span><span class=m>4</span><span class=p>]</span><span class=w>
+</span><span class=w>  </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>  </span><span class=nt>openFileUtil</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;open&#34;</span><span class=w>
+</span><span class=w>  </span><span class=nt>mods</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>digitalclock</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>color</span><span class=p>:</span><span class=w> </span><span class=l>red</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>font</span><span class=p>:</span><span class=w> </span><span class=l>digitalfont</span><span class=w>
+</span><span class=w>      </span><span class=nt>hourFormat</span><span class=p>:</span><span class=w> </span><span class=m>24</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>      </span><span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;big clock&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;digitalclock&#34;</span><span class=w>
+</span><span class=w>    </span><span class=nt>world_time</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;World Time&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>clocks</span><span class=w>
+</span><span class=w>      </span><span class=nt>colors</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>rows</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span><span class=nt>even</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;lightblue&#34;</span><span class=w>
+</span><span class=w>          </span><span class=nt>odd</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;white&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>locations</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>UTC</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Etc/UTC&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>London</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Europe/London&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>Berlin</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Europe/Berlin&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>New_York</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;America/New_York&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>China</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Asia/Shanghai&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>15</span><span class=w>
+</span><span class=w>      </span><span class=nt>sort</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;alphabetical&#34;</span><span class=w>
+</span><span class=w>    </span><span class=nt>battery</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>power</span><span class=w>
+</span><span class=w>      </span><span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;⚡️&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>15</span><span class=w>
+</span><span class=w>    </span><span class=nt>todolist</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>todo</span><span class=w>
+</span><span class=w>      </span><span class=nt>checkedIcon</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;X&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>colors</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>checked</span><span class=p>:</span><span class=w> </span><span class=l>gray</span><span class=w>
+</span><span class=w>        </span><span class=nt>highlight</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span><span class=nt>fore</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;black&#34;</span><span class=w>
+</span><span class=w>          </span><span class=nt>back</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;orange&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>filename</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;todo.yml&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>3600</span><span class=w>
+</span><span class=w>    </span><span class=nt>ip</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>ipinfo</span><span class=w>
+</span><span class=w>      </span><span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;My IP&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>colors</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;lightblue&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;white&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>150</span><span class=w>
+</span><span class=w>    </span><span class=nt>prettyweather</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>city</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;临沂&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>300</span><span class=w>
+</span><span class=w>      </span><span class=nt>unit</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;m&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>view</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>      </span><span class=nt>language</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;en&#34;</span><span class=w>
+</span><span class=w>    </span><span class=nt>security</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>3600</span><span class=w>
+</span><span class=w>    </span><span class=nt>docker</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>docker</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>labelColor</span><span class=p>:</span><span class=w> </span><span class=l>lightblue</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>    </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>resourceusage</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>    </span><span class=nt>uptime</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>cmdrunner</span><span class=w>
+</span><span class=w>      </span><span class=nt>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;&#34;</span><span class=p>]</span><span class=w>
+</span><span class=w>      </span><span class=nt>cmd</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;uptime&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>4</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>30</span><span class=w>
+</span><span class=w>    </span><span class=nt>disks</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>cmdrunner</span><span class=w>
+</span><span class=w>      </span><span class=nt>cmd</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;df&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;-h&#34;</span><span class=p>]</span><span class=w>
+</span><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>position</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>top</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
+</span><span class=w>        </span><span class=nt>left</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>height</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>        </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
+</span><span class=w>      </span><span class=nt>refreshInterval</span><span class=p>:</span><span class=w> </span><span class=m>3600</span><span class=w>
 </span></code></pre></td></tr></table></div></div><h3 id=官方支持模块>官方支持模块</h3><p>Azure DevOps
 BambooHR
 Buildkite
@@ -482,4 +482,4 @@ Zendesk</p><h2 id=bashtop>bashtop</h2><p>官方开源仓库：<a href=https://gi
 <span class=c1>#* Enable the use of psutil python3 module for data collection, default on OSX</span>
 <span class=nv>use_psutil</span><span class=o>=</span><span class=s2>&#34;true&#34;</span>
 </code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2020-06-12</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/linux-%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=http://x.agou-ops.top/linux-%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF/ data-title="Linux 系统资源监控面板" data-hashtags=Linux,监控><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=http://x.agou-ops.top/linux-%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF/ data-hashtag=Linux><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 Hacker News" data-sharer=hackernews data-url=http://x.agou-ops.top/linux-%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF/ data-title="Linux 系统资源监控面板"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="分享到 Line" data-sharer=line data-url=http://x.agou-ops.top/linux-%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF/ data-title="Linux 系统资源监控面板"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/line.svg></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=http://x.agou-ops.top/linux-%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF/ data-title="Linux 系统资源监控面板" data-ralateuid=AGou-ops><i class="fab fa-weibo fa-fw"></i></a><a href=javascript:void(0); title="分享到 百度" data-sharer=baidu data-url=http://x.agou-ops.top/linux-%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF/ data-title="Linux 系统资源监控面板"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/baidu.svg></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/linux/>Linux</a>,&nbsp;<a href=/tags/%E7%9B%91%E6%8E%A7/>监控</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/linux%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/ class=prev rel=prev title="Linux 生成随机数"><i class="fas fa-angle-left fa-fw"></i>Linux 生成随机数</a>
-<a href=/linux-%E6%97%A5%E5%BF%97%E5%88%86%E5%89%B2%E5%B7%A5%E5%85%B7/ class=next rel=next title="Linux 日志分割工具-split和logrotate">Linux 日志分割工具-split和logrotate<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=utterances></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://utteranc.es/>Utterances</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><a href=https://agou-ops.github.io target=_blank rel="noopener noreferrer" style=color:red>【AGou-ops.top】</a> 备份站点</div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.69.0">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2018 - 2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>AGou-ops</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span><span class=icp-splitter>&nbsp;|&nbsp;</span><br class=icp-br><span class=icp>鲁ICP备19050296号-2</span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"AGou-ops/comments"}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"5M8VQRD7W9","algoliaIndex":"blog-2","algoliaSearchKey":"2fcdbd0ce638664e7a28cc64939603b9","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"twemoji":true};</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
+<a href=/linux-%E6%97%A5%E5%BF%97%E5%88%86%E5%89%B2%E5%B7%A5%E5%85%B7/ class=next rel=next title="Linux 日志分割工具-split和logrotate">Linux 日志分割工具-split和logrotate<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=utterances></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://utteranc.es/>Utterances</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><a href=https://agou-ops.github.io target=_blank rel="noopener noreferrer" style=color:red>【AGou-ops.top】</a> 备份站点</div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.75.1">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2018 - 2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>AGou-ops</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span><span class=icp-splitter>&nbsp;|&nbsp;</span><br class=icp-br><span class=icp>鲁ICP备19050296号-2</span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"AGou-ops/comments"}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"5M8VQRD7W9","algoliaIndex":"blog-2","algoliaSearchKey":"2fcdbd0ce638664e7a28cc64939603b9","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"twemoji":true};</script><script type=text/javascript src=/js/theme.min.js></script></body></html>

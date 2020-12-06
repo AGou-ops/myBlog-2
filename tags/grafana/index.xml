@@ -1,6 +1,0 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>grafana - 标签 - AGou's Blog-2</title><link>http://x.agou-ops.top/tags/grafana/</link><description>grafana - 标签 - AGou's Blog-2</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 08 Oct 2020 14:04:30 +0800</lastBuildDate><atom:link href="http://x.agou-ops.top/tags/grafana/" rel="self" type="application/rss+xml"/><item><title>在k8s上使用Prometheus监控MongoDB</title><link>http://x.agou-ops.top/%E5%9C%A8k8s%E4%B8%8A%E4%BD%BF%E7%94%A8prometheus%E7%9B%91%E6%8E%A7mongodb/</link><pubDate>Thu, 08 Oct 2020 14:04:30 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/%E5%9C%A8k8s%E4%B8%8A%E4%BD%BF%E7%94%A8prometheus%E7%9B%91%E6%8E%A7mongodb/</guid><description><![CDATA[<h2 id="预先准备">预先准备</h2>
-<ul>
-<li>minikube For Windows(资源充足, 有集群更好不过);</li>
-<li>Helm;</li>
-<li>科学上网能力.</li>
-</ul>]]></description></item></channel></rss>
