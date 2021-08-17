@@ -1,4 +1,23 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>AGou's Blog-2</title><link>http://x.agou-ops.top/</link><description>关于博主</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 26 Jul 2021 19:43:31 +0800</lastBuildDate><atom:link href="http://x.agou-ops.top/index.xml" rel="self" type="application/rss+xml"/><item><title>记戴尔品牌机开机黑屏无logo故障</title><link>http://x.agou-ops.top/dell_unable_startup/</link><pubDate>Mon, 26 Jul 2021 19:43:31 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/dell_unable_startup/</guid><description><![CDATA[<p>今天白天同事钉钉上联系我，说电脑无法正常开机，约定好时间之后，我去到该同事工位看了看。其确切故障是电脑按下开机键之后无任何反应，显示器上连品牌logo都不显示。我的初步判断是：</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>AGou's Blog-2</title><link>http://x.agou-ops.top/</link><description>关于博主</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 17 Aug 2021 14:08:32 +0800</lastBuildDate><atom:link href="http://x.agou-ops.top/index.xml" rel="self" type="application/rss+xml"/><item><title>手动编译vim增加X Windows Clipboard功能模块</title><link>http://x.agou-ops.top/%E6%89%8B%E5%8A%A8%E7%BC%96%E8%AF%91vim%E5%A2%9E%E5%8A%A0x-windows-clipboard%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97/</link><pubDate>Tue, 17 Aug 2021 14:08:32 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/%E6%89%8B%E5%8A%A8%E7%BC%96%E8%AF%91vim%E5%A2%9E%E5%8A%A0x-windows-clipboard%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97/</guid><description><![CDATA[<p>默认直接通过<code>apt</code>或者<code>apt-get</code>安装的vim功能不全，缺少<code>clipboard</code>功能，原因是debian官方为了兼容性才如此考虑，但debian官方也同样提供了以下几个包来满足GUI需求：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">vim-athena
+Vi IMproved - enhanced vi editor - with Athena GUI
+vim-gtk
+Vi IMproved - enhanced vi editor - with GTK2 GUI
+vim-gtk3
+Vi IMproved - enhanced vi editor - with GTK3 GUI
+</code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>记戴尔品牌机开机黑屏无logo故障</title><link>http://x.agou-ops.top/dell_unable_startup/</link><pubDate>Mon, 26 Jul 2021 19:43:31 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/dell_unable_startup/</guid><description><![CDATA[<p>今天白天同事钉钉上联系我，说电脑无法正常开机，约定好时间之后，我去到该同事工位看了看。其确切故障是电脑按下开机键之后无任何反应，显示器上连品牌logo都不显示。我的初步判断是：</p>
 <ul>
 <li>显示屏是否有问题，或者是不是HDMI线接触不良？</li>
 <li>主板上显卡是不是接触不良？</li>
@@ -30,4 +49,4 @@
 <li>网易：http://mirrors.163.com/</li>
 </ul>
 <p>更多国内镜像仓库参考：https://blog.csdn.net/wyqwilliam/article/details/90581159</p>]]></description></item><item><title>Git Hook介绍与使用</title><link>http://x.agou-ops.top/git-hook%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</link><pubDate>Tue, 04 Aug 2020 10:23:38 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/git-hook%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid><description>&lt;p>Git 钩子和其它版本控制系统一样，Git 能在特定的重要动作发生时触发自定义脚本。&lt;/p>
-&lt;p>有两组这样的钩子：客户端的和服务器端的。 客户端钩子由诸如提交和合并这样的操作所调用，而服务器端钩子作用于诸如接收被推送的提交这样的联网操作。 你可以随心所欲地运用这些钩子。&lt;/p></description></item><item><title>Hexo博客使用gulp压缩静态资源 1</title><link>http://x.agou-ops.top/hexo%E5%8D%9A%E5%AE%A2%E4%BD%BF%E7%94%A8gulp%E5%8E%8B%E7%BC%A9%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90-1/</link><pubDate>Tue, 04 Aug 2020 10:23:38 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/hexo%E5%8D%9A%E5%AE%A2%E4%BD%BF%E7%94%A8gulp%E5%8E%8B%E7%BC%A9%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90-1/</guid><description>gulp 将开发流程中让人痛苦或耗时的任务自动化，从而减少你所浪费的时间、创造更大价值。 官方站点：https://www.gulpjs.com.cn</description></item></channel></rss>
+&lt;p>有两组这样的钩子：客户端的和服务器端的。 客户端钩子由诸如提交和合并这样的操作所调用，而服务器端钩子作用于诸如接收被推送的提交这样的联网操作。 你可以随心所欲地运用这些钩子。&lt;/p></description></item></channel></rss>
