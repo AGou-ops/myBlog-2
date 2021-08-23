@@ -1,14 +1,14 @@
-name: OSS #自动化的名称
+name: PUSH_TO_COS
 on:
-  push: # push的时候触发
-    branches: # 那些分支需要触发
+  push:
+    branches:
       - master
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master #软件市场的名称
-      with: # 参数
+    - uses: actions/checkout@master
+      with:
         submodules: true
     # hugo build static files
     - uses: peaceiris/actions-hugo@v2
@@ -24,7 +24,7 @@ jobs:
         secret_key: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
         # cos_bucket: ${{ secrets.COS_BUCKET }}
         # cos_region: ${{ secrets.COS_REGION }}
-        cos_bucket: "test-1259153413"
+        cos_bucket: "agou-ops-2-1259153413"
         cos_region: "ap-nanjing"
         local_path: public
         remote_path: /
