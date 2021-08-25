@@ -17,7 +17,7 @@ vim-gtk3
 Vi IMproved - enhanced vi editor - with GTK3 GUI
 </code></pre></td></tr></table>
 </div>
-</div>]]></description></item><item><title>记戴尔品牌机开机黑屏无logo故障</title><link>http://x.agou-ops.top/dell_unable_startup/</link><pubDate>Mon, 26 Jul 2021 19:43:31 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/dell_unable_startup/</guid><description><![CDATA[<p>今天白天同事钉钉上联系我，说电脑无法正常开机，约定好时间之后，我去到该同事工位看了看。其确切故障是电脑按下开机键之后无任何反应，显示器上连品牌logo都不显示。我的初步判断是：</p>
+</div>]]></description></item><item><title>根据csv重归档文件</title><link>http://x.agou-ops.top/%E6%A0%B9%E6%8D%AEcsv%E9%87%8D%E5%BD%92%E6%A1%A3%E6%96%87%E4%BB%B6/</link><pubDate>Wed, 11 Aug 2021 11:04:05 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/%E6%A0%B9%E6%8D%AEcsv%E9%87%8D%E5%BD%92%E6%A1%A3%E6%96%87%E4%BB%B6/</guid><description>&lt;p>&lt;strong>需求：根据excel中的文件列表，将excel进行简单处理成csv格式，使用sed、awk等结合正则对图片文件按照年月的格式来进行重新归档并输出相关日志。&lt;/strong>&lt;/p></description></item><item><title>记戴尔品牌机开机黑屏无logo故障</title><link>http://x.agou-ops.top/dell_unable_startup/</link><pubDate>Mon, 26 Jul 2021 19:43:31 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/dell_unable_startup/</guid><description><![CDATA[<p>今天白天同事钉钉上联系我，说电脑无法正常开机，约定好时间之后，我去到该同事工位看了看。其确切故障是电脑按下开机键之后无任何反应，显示器上连品牌logo都不显示。我的初步判断是：</p>
 <ul>
 <li>显示屏是否有问题，或者是不是HDMI线接触不良？</li>
 <li>主板上显卡是不是接触不良？</li>
@@ -38,14 +38,4 @@ Vi IMproved - enhanced vi editor - with GTK3 GUI
 <li>minikube For Windows(资源充足, 有集群更好不过);</li>
 <li>Helm;</li>
 <li>科学上网能力.</li>
-</ul>]]></description></item><item><title>自定义 shortcode</title><link>http://x.agou-ops.top/%E8%87%AA%E5%AE%9A%E4%B9%89shortcode/</link><pubDate>Tue, 06 Oct 2020 16:06:48 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/%E8%87%AA%E5%AE%9A%E4%B9%89shortcode/</guid><description>转至：https://agou-ops.top/post/%E8%87%AA%E5%AE%9A%E4%B9%89shortcode/</description></item><item><title>【日记】闲鱼垃圾佬的一天</title><link>http://x.agou-ops.top/%E6%97%A5%E8%AE%B0%E9%97%B2%E9%B1%BC%E5%9E%83%E5%9C%BE%E4%BD%AC%E7%9A%84%E4%B8%80%E5%A4%A9/</link><pubDate>Mon, 14 Sep 2020 20:36:21 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/%E6%97%A5%E8%AE%B0%E9%97%B2%E9%B1%BC%E5%9E%83%E5%9C%BE%E4%BD%AC%E7%9A%84%E4%B8%80%E5%A4%A9/</guid><description>购置背景 长达两个多月的菏泽实习结束了，感觉如释重负，终于摆脱了实习带来的困扰和限制，心情也不由地变好了起来。在返校的火车上，闲着没事刷了刷闲</description></item><item><title>搭建内网yum源(nginx、ftp)</title><link>http://x.agou-ops.top/%E6%90%AD%E5%BB%BA%E5%86%85%E7%BD%91yum%E6%BA%90/</link><pubDate>Tue, 04 Aug 2020 10:23:39 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/%E6%90%AD%E5%BB%BA%E5%86%85%E7%BD%91yum%E6%BA%90/</guid><description><![CDATA[<blockquote>
-<p>搭建内网yum源，摆脱软件包困扰。</p>
-</blockquote>
-<h2 id="选择合适稳定的公网yum仓库">选择合适稳定的公网yum仓库</h2>
-<p>建议选择对运营商网络友好的yum仓库</p>
-<p>国内可供选择的有:</p>
-<ul>
-<li>阿里云：http://mirrors.aliyun.com/  (这里我使用阿里云)</li>
-<li>网易：http://mirrors.163.com/</li>
-</ul>
-<p>更多国内镜像仓库参考：https://blog.csdn.net/wyqwilliam/article/details/90581159</p>]]></description></item></channel></rss>
+</ul>]]></description></item><item><title>自定义 shortcode</title><link>http://x.agou-ops.top/%E8%87%AA%E5%AE%9A%E4%B9%89shortcode/</link><pubDate>Tue, 06 Oct 2020 16:06:48 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/%E8%87%AA%E5%AE%9A%E4%B9%89shortcode/</guid><description>转至：https://agou-ops.top/post/%E8%87%AA%E5%AE%9A%E4%B9%89shortcode/</description></item><item><title>【日记】闲鱼垃圾佬的一天</title><link>http://x.agou-ops.top/%E6%97%A5%E8%AE%B0%E9%97%B2%E9%B1%BC%E5%9E%83%E5%9C%BE%E4%BD%AC%E7%9A%84%E4%B8%80%E5%A4%A9/</link><pubDate>Mon, 14 Sep 2020 20:36:21 +0800</pubDate><author>作者</author><guid>http://x.agou-ops.top/%E6%97%A5%E8%AE%B0%E9%97%B2%E9%B1%BC%E5%9E%83%E5%9C%BE%E4%BD%AC%E7%9A%84%E4%B8%80%E5%A4%A9/</guid><description>购置背景 长达两个多月的菏泽实习结束了，感觉如释重负，终于摆脱了实习带来的困扰和限制，心情也不由地变好了起来。在返校的火车上，闲着没事刷了刷闲</description></item></channel></rss>
