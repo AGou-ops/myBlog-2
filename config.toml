@@ -6,7 +6,7 @@ languageCode = "zh-CN"
 # 是否包括中日韩文字
 hasCJKLanguage = true
 # 网站标题
-title = "AGou's Blog-bak"
+title = "AGou's Blog-2"
 timeout = 3000
 # 更改使用 Hugo 构建网站时使用的默认主题
 theme = "LoveIt"
@@ -44,7 +44,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "Tags"
-        url = "/tags/"
+        url = "../myBlog-2/tags/"
         title = ""
         weight = 2
       [[languages.en.menu.main]]
@@ -52,7 +52,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "Categories"
-        url = "/categories/"
+        url = "../myBlog-2/categories/"
         title = ""
         weight = 3
       [[languages.en.menu.main]]
@@ -60,7 +60,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "Anime"
-        url = "/Anime/"
+        url = "../myBlog-2/Anime/"
         title = ""
         weight = 4
       [[languages.en.menu.main]]
@@ -68,7 +68,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "About"
-        url = "/about/"
+        url = "../myBlog-2/about/"
         title = ""
         weight = 5
       [[languages.en.menu.main]]
@@ -237,7 +237,7 @@ theme = "LoveIt"
         # 你可以在名称 (允许 HTML 格式) 之后添加其他信息, 例如图标
         post = ""
         name = "所有文章"
-        url = "/posts/"
+        url = "../myBlog-2/posts/"
         title = ""
         weight = 1
       [[languages.zh-cn.menu.main]]
@@ -245,7 +245,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "标签"
-        url = "/tags/"
+        url = "../myBlog-2/tags/"
         title = ""
         weight = 2
       [[languages.zh-cn.menu.main]]
@@ -253,7 +253,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "分类"
-        url = "/categories/"
+        url = "../myBlog-2/categories/"
         title = ""
         weight = 3
       [[languages.zh-cn.menu.main]]
@@ -261,7 +261,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "Anime"
-        url = "/Anime/"
+        url = "../myBlog-2/Anime/"
         title = ""
         weight = 4
       [[languages.zh-cn.menu.main]]
@@ -269,7 +269,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "关于"
-        url = "/about/"
+        url = "../myBlog-2/about/"
         title = ""
         weight = 5
       [[languages.zh-cn.menu.main]]
@@ -442,7 +442,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "Balises"
-        url = "/tags/"
+        url = "../myBlog-2/tags/"
         title = ""
         weight = 2
       [[languages.fr.menu.main]]
@@ -450,7 +450,7 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "Catégories"
-        url = "/categories/"
+        url = "../myBlog-2/categories/"
         title = ""
         weight = 3
       [[languages.fr.menu.main]]
@@ -458,14 +458,14 @@ theme = "LoveIt"
         pre = ""
         post = ""
         name = "Docs"
-        url = "/categories/documentation/"
+        url = "../myBlog-2/categories/documentation/"
         title = ""
         weight = 4
       [[languages.fr.menu.main]]
         identifier = "about"
         pre = ""
         name = "À propos"
-        url = "/about/"
+        url = "../myBlog-2/about/"
         title = ""
         weight = 5
       [[languages.fr.menu.main]]
@@ -1083,8 +1083,8 @@ theme = "LoveIt"
   # posts = ":year/:month/:filename"
   posts = ":filename"
 
-# Privacy config (https://gohugo.io/about/hugo-and-gdpr/)
-# 隐私信息配置 (https://gohugo.io/about/hugo-and-gdpr/)
+# Privacy config (https://gohugo.io../myBlog-2/about/hugo-and-gdpr/)
+# 隐私信息配置 (https://gohugo.io../myBlog-2/about/hugo-and-gdpr/)
 [privacy]
   # privacy of the Google Analytics (replaced by params.analytics.google)
   # Google Analytics 相关隐私 (被 params.analytics.google 替代)
