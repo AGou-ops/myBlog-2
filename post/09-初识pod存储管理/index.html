@@ -1,0 +1,594 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>09 初识Pod存储管理 - AGou's Blog-2</title><meta name=Description content="关于博主"><meta property="og:title" content="09 初识Pod存储管理"><meta property="og:description" content="写在前面 上一篇文章中kubernetes系列教程（八）Pod健康检查机制介绍了kubernetes中Pod健康检查机制，通过实战介绍了kub"><meta property="og:type" content="article"><meta property="og:url" content="https://agou-ops.cn/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/"><meta property="og:image" content="https://agou-images.oss-cn-qingdao.aliyuncs.com/BaseIMG/tuoer.jpg"><meta property="article:published_time" content="2019-08-04T10:36:48+08:00"><meta property="article:modified_time" content="2019-08-04T10:36:48+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://agou-images.oss-cn-qingdao.aliyuncs.com/BaseIMG/tuoer.jpg"><meta name=twitter:title content="09 初识Pod存储管理"><meta name=twitter:description content="写在前面 上一篇文章中kubernetes系列教程（八）Pod健康检查机制介绍了kubernetes中Pod健康检查机制，通过实战介绍了kub"><meta name=application-name content="AGou's Blog-2."><meta name=apple-mobile-web-app-title content="AGou's Blog-2."><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://agou-ops.cn/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/><link rel=prev href=https://agou-ops.cn/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/><link rel=next href=https://agou-ops.cn/myBlog-2/post/08-pod%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E6%9C%BA%E5%88%B6/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/myBlog-2/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"09 初识Pod存储管理","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/agou-ops.cn\/myBlog-2\/post\/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86\/"},"image":["https:\/\/agou-images.oss-cn-qingdao.aliyuncs.com\/BaseIMG\/tuoer.jpg"],"genre":"posts","keywords":"kubernetes","wordcount":5116,"url":"https:\/\/agou-ops.cn\/myBlog-2\/post\/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86\/","datePublished":"2019-08-04T10:36:48+08:00","dateModified":"2019-08-04T10:36:48+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"AGou-ops","logo":"https:\/\/agou-images.oss-cn-qingdao.aliyuncs.com\/BaseIMG\/tuoer.jpg"},"author":{"@type":"Person","name":"AGou-ops"},"description":""}</script></head><body header-desktop=auto header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/myBlog-2/ title="AGou's Blog-2"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>AGou-ops</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/myBlog-2/posts/>所有文章 </a><a class=menu-item href=/myBlog-2/tags/>标签 </a><a class=menu-item href=/myBlog-2/categories/>分类 </a><a class=menu-item href=/myBlog-2/Anime/>Anime </a><a class=menu-item href=/myBlog-2/about/>关于 </a><a class=menu-item href=https://github.com/AGou-ops title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select id=language-select-desktop onchange="location=this.value;"><option value=/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/myBlog-2/ title="AGou's Blog-2"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>AGou-ops</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/myBlog-2/posts/>所有文章</a><a class=menu-item href=/myBlog-2/tags/>标签</a><a class=menu-item href=/myBlog-2/categories/>分类</a><a class=menu-item href=/myBlog-2/Anime/>Anime</a><a class=menu-item href=/myBlog-2/about/>关于</a><a class=menu-item href=https://github.com/AGou-ops title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a><a href=javascript:void(0); class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select onchange="location=this.value;"><option value=/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">09 初识Pod存储管理</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/myBlog-2/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>AGou-ops</a></span>&nbsp;<span class=post-category>收录于 <a href=/myBlog-2/categories/%E8%BD%AC%E8%BD%BD/><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href=/myBlog-2/categories/kubernetes/><i class="far fa-folder fa-fw"></i>kubernetes</a>&nbsp;<a href=/myBlog-2/categories/%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/><i class="far fa-folder fa-fw"></i>基础教程</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-08-04>2019-08-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 5116 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 11 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#11-存储概述>1.1 存储概述</a></li><li><a href=#12-emptydir临时存储>1.2 emptyDir临时存储</a></li><li><a href=#13-hostpath主机存储>1.3 hostPath主机存储</a></li><li><a href=#14--nfs存储对接>1.4 NFS存储对接</a></li><li><a href=#15-tke使用volume存储>1.5 TKE使用volume存储</a></li></ul></nav></div></div><div class=content id=content><h1 id=写在前面>写在前面</h1><p>上一篇文章中<a href=# rel>kubernetes系列教程（八）Pod健康检查机制</a>介绍了kubernetes中Pod健康检查机制，通过实战介绍了kubernetes中两种健康检查探针：livenessProbe存活检查，readinessProbe就绪检查，存活检查用于检查应用的可用性，就绪检查用于检查容器是否准备接受流量，健康检查包含三种探测的方法：exec命令行探测，tcpSocket端口检测，httpGet请求检测，分别适用于不同场景下的健康检查。接下来介绍<a href=# rel>kubernetes系列教程</a>pod的存储管理。</p><p>kubernetes存储管理按照发展的历程，涉及到有Volume，PV(Persistent Volume)和PVC(PersistentVolumeClaims),和StorageClass，Volume是最早提出的存储卷，主要解决容器和数据存储的依赖关系，抽象底层驱动以支持不同的存储类型；使用Volume需要了解底层存储细节，因此提出了PV，Persistent Volume是由k8s管理员定义的存储单元，应用端使用PersistentVolumeClaims声明去调用PV存储，进一步抽象了底层存储；随着PV数量的增加，管理员需要不停的定义PV的数量，衍生了通过StorageClass动态生成PV，StorageClass通过PVC中声明存储的容量，会调用底层的提供商生成PV。本文介绍Volume的使用，下篇文章介绍PV，PVC和StorageClass。</p><ul><li>Volume 存储卷，独立于容器，后端和不同的存储驱动对接</li><li>PV Persistent Volume持久化存储卷，和node类似，是一种集群资源，由管理员定义，对接不同的存储</li><li>PVC PersistentVolumeClaims持久化存储声明，和pod类似，作为PV的使用者</li><li>StorageClass 动态存储类型，分为静态和动态两种类型，通过在PVC中定义存储类型，自动创建所需PV</li></ul><h1 id=1-kubernetes存储管理>1. kubernetes存储管理</h1><h2 id=11-存储概述>1.1 存储概述</h2><p>kubernetes容器中的数据是临时的，即当重启重启或crash后容器的数据将会丢失，此外容器之间有共享存储的需求，所以kubernetes中提供了volume存储的抽象，volume后端能够支持多种不同的plugin驱动，通过.spec.volumes中定义一个存储，然后在容器中.spec.containers.volumeMounts调用，最终在容器内部以目录的形式呈现。</p><p>kubernetes内置能支持多种不同的驱动类型，大体上可以分为四种类型：1. 公/私有云驱动接口，如awsElasticBlockStore实现与aws EBS集成，2. 开源存储驱动接口，如ceph rbd，实现与ceph rb块存储对接，3. 本地临时存储，如hostPath，4. kubernetes对象API驱动接口，实现其他对象调用，如configmap，每种存储支持不同的驱动，如下介绍：</p><ol><li>公/私有云驱动接口</li></ol><ul><li>awsElasticBlockStore AWS的EBS云盘</li><li>azureDisk 微软azure云盘</li><li>azureFile 微软NAS存储</li><li>gcePersistentDisk google云盘</li><li>cinder openstack cinder云盘</li><li>vsphereVolume VMware的VMFS存储</li><li>scaleIO EMC分布式存储</li></ul><ol><li>开源存储驱动接口</li></ol><ul><li>ceph rbd ceph块存储</li><li>cephfs ceph文件存储</li><li>glusterfs glusterfs存储</li><li>nfs nfs文件</li><li>iscsi</li><li>flexvolume</li><li>csi 社区标准化驱动</li><li>flocker</li></ul><ol><li>本地临时存储</li></ol><ul><li>hostpath 宿主机文件</li><li>emptyDir 临时目录</li></ul><ol><li>kubernetes对象API驱动接口</li></ol><ul><li>configMap 调用configmap对象，注入配置文件</li><li>secrets 调用secrets对象，注入秘文配置文件</li><li>persistentVolumeClaim 通过pvc调用存储</li><li>downloadAPI 下载URL</li><li>projected</li></ul><h2 id=12-emptydir临时存储>1.2 emptyDir临时存储</h2><p>emptyDir是一种临时存储，pod创建的时候会在node节点上为容器申请一个临时的目录，跟随容器的生命周期，如容器删除，emptyDir定义的临时存储空间也会随之删除，容器发生意外crash则不受影响，同时如果容器发生了迁移，其上的数据也会丢失，emptyDir一般用于测试，或者缓存场景。</p><ol><li>定义一个emptyDir存储大小为1G，将其挂载到redis的/data目录中</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>cat</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span><span class=p>.</span><span class=nx>yaml</span>
+<span class=nx>apiVersion</span><span class=o>:</span> <span class=nx>v1</span>
+<span class=nx>kind</span><span class=o>:</span> <span class=nx>Pod</span>
+<span class=nx>metadata</span><span class=o>:</span>
+  <span class=nx>name</span><span class=o>:</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span>
+  <span class=nx>labels</span><span class=o>:</span>
+    <span class=nx>volume</span><span class=o>:</span> <span class=nx>emptydir</span>
+  <span class=nx>annotations</span><span class=o>:</span>
+    <span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>storage</span><span class=o>:</span> <span class=nx>emptyDir</span>
+<span class=nx>spec</span><span class=o>:</span>
+  <span class=nx>containers</span><span class=o>:</span>
+  <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span>
+    <span class=nx>image</span><span class=o>:</span> <span class=nx>redis</span><span class=o>:</span><span class=nx>latest</span>
+    <span class=nx>imagePullPolicy</span><span class=o>:</span> <span class=nx>IfNotPresent</span>
+    <span class=nx>ports</span><span class=o>:</span>
+    <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>redis</span><span class=o>-</span><span class=mi>6379</span><span class=o>-</span><span class=nx>port</span>
+      <span class=nx>protocol</span><span class=o>:</span> <span class=nx>TCP</span>
+      <span class=nx>containerPort</span><span class=o>:</span> <span class=mi>6379</span>
+    <span class=nx>volumeMounts</span><span class=o>:</span> <span class=err>#</span><span class=nx>将定义的驱动emptydir</span><span class=o>-</span><span class=nx>redis挂载到容器的</span><span class=o>/</span><span class=nx>data目录</span><span class=err>，</span><span class=nx>通过名字方式关联</span>
+    <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span>
+      <span class=nx>mountPath</span><span class=o>:</span> <span class=err>/data</span>
+  <span class=nx>volumes</span><span class=o>:</span>        <span class=err>#</span><span class=nx>定义一个存储</span><span class=err>，</span><span class=nx>驱动类型为emptyDir</span><span class=err>，</span><span class=nx>大小1G</span>
+  <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span>
+    <span class=nx>emptyDir</span><span class=o>:</span> 
+      <span class=nx>sizeLimit</span><span class=o>:</span> <span class=mi>1</span><span class=nx>Gi</span>
+</code></pre></td></tr></table></div></div><ol><li>生成redis pod,并查看describe pod的详情信息</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>apply</span> <span class=o>-</span><span class=nx>f</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span><span class=p>.</span><span class=nx>yaml</span> 
+<span class=nx>pod</span><span class=o>/</span><span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span> <span class=nx>created</span>
+
+<span class=nx>执行kubectl</span> <span class=nx>describe</span> <span class=nx>pods</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis查看容器的存储挂载信息</span>
+<span class=nx>Containers</span><span class=o>:</span>
+  <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span><span class=o>:</span>
+    <span class=nx>Container</span> <span class=nx>ID</span><span class=o>:</span>   <span class=nx>docker</span><span class=o>:</span><span class=c1>//dddd9f3d0e395d784c08b712631d2b0c259bfdb30b0c655a0fc8021492f1ecf9
+</span><span class=c1></span>    <span class=nx>Image</span><span class=o>:</span>          <span class=nx>redis</span><span class=o>:</span><span class=nx>latest</span>
+    <span class=nx>Image</span> <span class=nx>ID</span><span class=o>:</span>       <span class=nx>docker</span><span class=o>-</span><span class=nx>pullable</span><span class=o>:</span><span class=c1>//redis@sha256:cb379e1a076fcd3d3f09e10d7b47ca631fb98fb33149ab559fa02c1b11436345
+</span><span class=c1></span>    <span class=nx>Port</span><span class=o>:</span>           <span class=mi>6379</span><span class=o>/</span><span class=nx>TCP</span>
+    <span class=nx>Host</span> <span class=nx>Port</span><span class=o>:</span>      <span class=mi>0</span><span class=o>/</span><span class=nx>TCP</span>
+    <span class=nx>State</span><span class=o>:</span>          <span class=nx>Running</span>
+      <span class=nx>Started</span><span class=o>:</span>      <span class=nx>Tue</span><span class=p>,</span> <span class=mi>01</span> <span class=nx>Oct</span> <span class=mi>2019</span> <span class=mi>11</span><span class=o>:</span><span class=mi>04</span><span class=o>:</span><span class=mi>30</span> <span class=o>+</span><span class=mi>0800</span>
+    <span class=nx>Ready</span><span class=o>:</span>          <span class=nx>True</span>
+    <span class=nx>Restart</span> <span class=nx>Count</span><span class=o>:</span>  <span class=mi>0</span>
+    <span class=nx>Environment</span><span class=o>:</span>    <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+    <span class=nx>Mounts</span><span class=o>:</span>   <span class=err>#</span><span class=nx>挂载信息</span><span class=err>，</span><span class=nx>将emptydir</span><span class=o>-</span><span class=nx>redis挂载到</span><span class=o>/</span><span class=nx>data目录</span><span class=err>，</span><span class=nx>且是rw读写状态</span>
+      <span class=o>/</span><span class=nx>data</span> <span class=nx>from</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span> <span class=p>(</span><span class=nx>rw</span><span class=p>)</span>
+      <span class=o>/</span><span class=kd>var</span><span class=err>/run/secrets/kubernetes.io/serviceaccount from default-token-5qwmc (ro)</span>
+<span class=nx>Conditions</span><span class=o>:</span>
+  <span class=nx>Type</span>              <span class=nx>Status</span>
+  <span class=nx>Initialized</span>       <span class=nx>True</span> 
+  <span class=nx>Ready</span>             <span class=nx>True</span> 
+  <span class=nx>ContainersReady</span>   <span class=nx>True</span> 
+  <span class=nx>PodScheduled</span>      <span class=nx>True</span> 
+<span class=nx>Volumes</span><span class=o>:</span>       <span class=err>#</span><span class=nx>定义了一个EmptyDir类型的存储</span><span class=err>，</span><span class=nx>大小为1Gi</span>
+  <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span><span class=o>:</span>
+    <span class=nx>Type</span><span class=o>:</span>       <span class=nx>EmptyDir</span> <span class=p>(</span><span class=nx>a</span> <span class=nx>temporary</span> <span class=nx>directory</span> <span class=nx>that</span> <span class=nx>shares</span> <span class=nx>a</span> <span class=nx>pod</span><span class=err>&#39;</span><span class=nx>s</span> <span class=nx>lifetime</span><span class=p>)</span>
+    <span class=nx>Medium</span><span class=o>:</span>     
+    <span class=nx>SizeLimit</span><span class=o>:</span>  <span class=mi>1</span><span class=nx>Gi</span>
+  <span class=k>default</span><span class=o>-</span><span class=nx>token</span><span class=o>-</span><span class=mi>5</span><span class=nx>qwmc</span><span class=o>:</span>
+    <span class=nx>Type</span><span class=o>:</span>        <span class=nx>Secret</span> <span class=p>(</span><span class=nx>a</span> <span class=nx>volume</span> <span class=nx>populated</span> <span class=nx>by</span> <span class=nx>a</span> <span class=nx>Secret</span><span class=p>)</span>
+    <span class=nx>SecretName</span><span class=o>:</span>  <span class=k>default</span><span class=o>-</span><span class=nx>token</span><span class=o>-</span><span class=mi>5</span><span class=nx>qwmc</span>
+    <span class=nx>Optional</span><span class=o>:</span>    <span class=kc>false</span>
+</code></pre></td></tr></table></div></div><ol><li>向redis中写入数据</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=nx>获取pod的ip地址</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>get</span> <span class=nx>pods</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span> <span class=o>-</span><span class=nx>o</span> <span class=nx>wide</span> 
+<span class=nx>NAME</span>             <span class=nx>READY</span>   <span class=nx>STATUS</span>    <span class=nx>RESTARTS</span>   <span class=nx>AGE</span>   <span class=nx>IP</span>            <span class=nx>NODE</span>     <span class=nx>NOMINATED</span> <span class=nx>NODE</span>   <span class=nx>READINESS</span> <span class=nx>GATES</span>
+<span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span>   <span class=mi>1</span><span class=o>/</span><span class=mi>1</span>     <span class=nx>Running</span>   <span class=mi>1</span>          <span class=mi>17</span><span class=nx>m</span>   <span class=mf>10.244.1.27</span>   <span class=nx>node</span><span class=o>-</span><span class=mi>2</span>   <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>           <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+
+
+<span class=nx>安装客户端redis</span><span class=o>-</span><span class=nx>cli</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>yum</span> <span class=nx>install</span> <span class=nx>redis</span>
+
+<span class=nx>向redis中写入两个key</span>
+<span class=mf>10.244.1.27</span><span class=o>:</span><span class=mi>6379</span><span class=o>&gt;</span> <span class=nx>set</span> <span class=nx>volume</span> <span class=nx>emptydir</span>
+<span class=nx>OK</span>
+<span class=mf>10.244.1.27</span><span class=o>:</span><span class=mi>6379</span><span class=o>&gt;</span> <span class=nx>set</span> <span class=nx>username</span> <span class=nx>happylauliu</span>
+<span class=nx>OK</span>
+<span class=mf>10.244.1.27</span><span class=o>:</span><span class=mi>6379</span><span class=o>&gt;</span> <span class=nx>get</span> <span class=nx>volume</span>
+<span class=s2>&#34;emptydir&#34;</span>
+<span class=mf>10.244.1.27</span><span class=o>:</span><span class=mi>6379</span><span class=o>&gt;</span> <span class=nx>get</span> <span class=nx>username</span>
+<span class=s2>&#34;happylauliu&#34;</span>
+</code></pre></td></tr></table></div></div><ol><li>登陆到pod中安装一个查看进程的工具procps，进程一般为1，如下图redis-server进程，可以直接kill，进程被kill后kubelet会自动将进程重启</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=nx>登陆容器</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>exec</span> <span class=o>-</span><span class=nx>it</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span> <span class=o>/</span><span class=nx>bin</span><span class=o>/</span><span class=nx>bash</span>
+
+<span class=nx>安装软件</span>
+<span class=nx>root</span><span class=err>@</span><span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span><span class=o>:</span><span class=err>/data# apt-get update ; apt-get install procps</span>
+
+<span class=nx>可以通过top查看进程</span><span class=err>，</span><span class=nx>进程号一般为1</span>
+<span class=nx>root</span><span class=err>@</span><span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span><span class=o>:</span><span class=err>/data# kill 1</span>
+</code></pre></td></tr></table></div></div><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/1%20-%201620.jpg data-srcset="https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/1%20-%201620.jpg, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/1%20-%201620.jpg 1.5x, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/1%20-%201620.jpg 2x" data-sizes=auto alt=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/1%20-%201620.jpg title=redis-server进程></p><ol><li>pod异常重启后，再次登录redis并查看redis中的数据内容，发现数据没有丢失。</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>redis</span><span class=o>-</span><span class=nx>cli</span> <span class=o>-</span><span class=nx>h</span> <span class=mf>10.244.1.27</span>
+<span class=mf>10.244.1.27</span><span class=o>:</span><span class=mi>6379</span><span class=o>&gt;</span> <span class=nx>get</span> <span class=nx>volume</span>
+<span class=s2>&#34;emptydir&#34;</span>
+<span class=mf>10.244.1.27</span><span class=o>:</span><span class=mi>6379</span><span class=o>&gt;</span> <span class=nx>get</span> <span class=nx>username</span>
+<span class=s2>&#34;happylauliu&#34;</span>
+</code></pre></td></tr></table></div></div><ol><li>emptyDir实际是宿主机上创建的一个目录，将目录以bind mount的形势挂载到容器中，跟随容器的生命周期</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>2</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>docker</span> <span class=nx>container</span>  <span class=nx>list</span> <span class=o>|</span><span class=nx>grep</span> <span class=nx>redis</span>
+<span class=nx>e0e9a6b0ed77</span>        <span class=mi>01</span><span class=nx>a52b3b5cd1</span>            <span class=s2>&#34;docker-entrypoint.s…&#34;</span>   <span class=mi>20</span> <span class=nx>minutes</span> <span class=nx>ago</span>      <span class=nx>Up</span> <span class=mi>20</span> <span class=nx>minutes</span>                           <span class=nx>k8s_emptydir</span><span class=o>-</span><span class=nx>redis_emptydir</span><span class=o>-</span><span class=nx>redis_default_4baadb25</span><span class=o>-</span><span class=mi>1</span><span class=nx>e62</span><span class=o>-</span><span class=mi>4</span><span class=nx>cf5</span><span class=o>-</span><span class=mi>9724</span><span class=o>-</span><span class=mi>821</span><span class=nx>d04dcdd44_2</span>
+<span class=nx>dfef32905fe5</span>        <span class=nx>k8s</span><span class=p>.</span><span class=nx>gcr</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>pause</span><span class=o>:</span><span class=mf>3.1</span>    <span class=s2>&#34;/pause&#34;</span>                 <span class=mi>45</span> <span class=nx>minutes</span> <span class=nx>ago</span>      <span class=nx>Up</span> <span class=mi>45</span> <span class=nx>minutes</span>                           <span class=nx>k8s_POD_emptydir</span><span class=o>-</span><span class=nx>redis_default_4baadb25</span><span class=o>-</span><span class=mi>1</span><span class=nx>e62</span><span class=o>-</span><span class=mi>4</span><span class=nx>cf5</span><span class=o>-</span><span class=mi>9724</span><span class=o>-</span><span class=mi>821</span><span class=nx>d04dcdd44_0</span>
+</code></pre></td></tr></table></div></div><p>docker container inspect e0e9a6b0ed77查看存储内容如下图：</p><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/2%20-%201620.jpg data-srcset="https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/2%20-%201620.jpg, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/2%20-%201620.jpg 1.5x, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/2%20-%201620.jpg 2x" data-sizes=auto alt=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/2%20-%201620.jpg title=empty存储mount信息></p><p>查看目录的信息：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>2</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>ls</span> <span class=o>-</span><span class=nx>l</span> <span class=o>/</span><span class=kd>var</span><span class=err>/lib/kubelet/pods/4baadb25-1e62-4cf5-9724-821d04dcdd44/volumes/kubernetes.io~empty-dir/emptydir-redis</span>
+<span class=nx>总用量</span> <span class=mi>4</span>
+<span class=o>-</span><span class=nx>rw</span><span class=o>-</span><span class=nx>r</span><span class=o>--</span><span class=nx>r</span><span class=o>--</span> <span class=mi>1</span> <span class=nx>polkitd</span> <span class=nx>input</span> <span class=mi>156</span> <span class=mi>10</span><span class=nx>月</span>  <span class=mi>8</span> <span class=mi>14</span><span class=o>:</span><span class=mi>55</span> <span class=nx>dump</span><span class=p>.</span><span class=nx>rdb</span>
+</code></pre></td></tr></table></div></div><ol><li>Pod删除后，volume的信息也随之删除</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=k>delete</span> <span class=nx>pods</span> <span class=nx>emptydir</span><span class=o>-</span><span class=nx>redis</span> 
+<span class=nx>pod</span> <span class=s2>&#34;emptydir-redis&#34;</span> <span class=nx>deleted</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>ssh</span> <span class=nx>node</span><span class=o>-</span><span class=mi>2</span>
+<span class=nx>Last</span> <span class=nx>login</span><span class=o>:</span> <span class=nx>Tue</span> <span class=nx>Oct</span>  <span class=mi>8</span> <span class=mi>15</span><span class=o>:</span><span class=mi>15</span><span class=o>:</span><span class=mi>41</span> <span class=mi>2019</span> <span class=nx>from</span> <span class=mf>10.254.100.101</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>2</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>ls</span> <span class=o>-</span><span class=nx>l</span> <span class=o>/</span><span class=kd>var</span><span class=err>/lib/kubelet/pods/4baadb25-1e62-4cf5-9724-821d04dcdd44/volumes/kubernetes.io~empty-dir/emptydir-redis</span>
+<span class=nx>ls</span><span class=o>:</span> <span class=nx>无法访问</span><span class=o>/</span><span class=kd>var</span><span class=err>/lib/kubelet/pods/4baadb25-1e62-4cf5-9724-821d04dcdd44/volumes/kubernetes.io~empty-dir/emptydir-redis: 没有那个文件或目录</span>
+</code></pre></td></tr></table></div></div><p><strong>小结</strong>：emptyDir是host上定义的一块临时存储，通过bind mount的形式挂载到容器中使用，容器重启数据会保留，容器删除则volume会随之删除。</p><h2 id=13-hostpath主机存储>1.3 hostPath主机存储</h2><p>与emptyDir类似，hostpath支持将node节点的目录或文件挂载到容器中使用，用于单机测试场景，此外适用于一些容器业务需要访问宿主机目录，如监控系统访问/proc和/sys目录，日志系统访问/var/lib/docker目录的一些场景。支持设置不同的type类型</p><ul><li>Directory 本地存在的目录</li><li>DirectoryOrCreate 目录，如果不存在则创建，权限设置为755，属主和组设置和kubelet一致</li><li>File 本地存在文件</li><li>FileOrCreate 文件，如果不存在则创建，权限设置为644，属主和组设置和kubelet一致</li><li>Socket 本地已存在Socket文件</li><li>CharDevice 本地已存在的Char字符设备</li><li>BlockDevice 本地已存在的Block块设备</li></ul><ol><li>挂载本地/mnt目录到容器中</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>cat</span> <span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span><span class=p>.</span><span class=nx>yaml</span>
+<span class=nx>apiVersion</span><span class=o>:</span> <span class=nx>v1</span>
+<span class=nx>kind</span><span class=o>:</span> <span class=nx>Pod</span>
+<span class=nx>metadata</span><span class=o>:</span>
+  <span class=nx>name</span><span class=o>:</span> <span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span>
+  <span class=nx>labels</span><span class=o>:</span>
+    <span class=nx>storage</span><span class=o>:</span> <span class=nx>hostpath</span>
+  <span class=nx>annotations</span><span class=o>:</span>
+    <span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>storage</span><span class=o>:</span> <span class=nx>hostpath</span>
+<span class=nx>spec</span><span class=o>:</span>
+  <span class=nx>containers</span><span class=o>:</span>
+  <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>nginx</span>
+    <span class=nx>image</span><span class=o>:</span> <span class=nx>nginx</span><span class=o>:</span><span class=nx>latest</span>
+    <span class=nx>imagePullPolicy</span><span class=o>:</span> <span class=nx>IfNotPresent</span>
+    <span class=nx>ports</span><span class=o>:</span>
+    <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>nginx</span><span class=o>-</span><span class=nx>http</span><span class=o>-</span><span class=nx>port</span>
+      <span class=nx>protocol</span><span class=o>:</span> <span class=nx>TCP</span>
+      <span class=nx>containerPort</span><span class=o>:</span> <span class=mi>80</span>
+    <span class=nx>volumeMounts</span><span class=o>:</span> <span class=err>#</span><span class=nx>挂载到nginx的web站点目录下</span>
+    <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span>
+      <span class=nx>mountPath</span><span class=o>:</span> <span class=err>/usr/share/nginx/html</span>
+  <span class=nx>volumes</span><span class=o>:</span>  <span class=err>#</span><span class=nx>定一个hostPath本地的存储</span>
+  <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span>
+    <span class=nx>hostPath</span><span class=o>:</span>
+      <span class=nx>type</span><span class=o>:</span> <span class=nx>DirectoryOrCreate</span>
+      <span class=nx>path</span><span class=o>:</span> <span class=err>/mnt/data</span>
+</code></pre></td></tr></table></div></div><ol><li>生成nginx容器和web站点数据</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>apply</span> <span class=o>-</span><span class=nx>f</span> <span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span><span class=p>.</span><span class=nx>yaml</span> 
+<span class=nx>pod</span><span class=o>/</span><span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span> <span class=nx>created</span>
+
+<span class=nx>获取pod所在的node节点</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>get</span> <span class=nx>pods</span> <span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span> <span class=o>-</span><span class=nx>o</span> <span class=nx>wide</span> 
+<span class=nx>NAME</span>            <span class=nx>READY</span>   <span class=nx>STATUS</span>    <span class=nx>RESTARTS</span>   <span class=nx>AGE</span>   <span class=nx>IP</span>            <span class=nx>NODE</span>     <span class=nx>NOMINATED</span> <span class=nx>NODE</span>   <span class=nx>READINESS</span> <span class=nx>GATES</span>
+<span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span>   <span class=mi>1</span><span class=o>/</span><span class=mi>1</span>     <span class=nx>Running</span>   <span class=mi>0</span>          <span class=mi>31</span><span class=nx>s</span>   <span class=mf>10.244.2.24</span>   <span class=nx>node</span><span class=o>-</span><span class=mi>3</span>   <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>           <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+
+<span class=nx>生成web站点的数据</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>ssh</span> <span class=nx>node</span><span class=o>-</span><span class=mi>3</span>
+<span class=nx>Last</span> <span class=nx>login</span><span class=o>:</span> <span class=nx>Tue</span> <span class=nx>Oct</span>  <span class=mi>8</span> <span class=mi>22</span><span class=o>:</span><span class=mi>49</span><span class=o>:</span><span class=mi>14</span> <span class=mi>2019</span> <span class=nx>from</span> <span class=mf>10.254.100.101</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>3</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>echo</span> <span class=s2>&#34;hostPath test page&#34;</span> <span class=o>&gt;</span><span class=err>/mnt/data/index.html</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>3</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>curl</span> <span class=nx>http</span><span class=o>:</span><span class=c1>//10.244.2.24
+</span><span class=c1></span><span class=nx>hostPath</span> <span class=nx>test</span> <span class=nx>page</span>
+</code></pre></td></tr></table></div></div><ol><li>查看容器挂载存储的情况，以bind mount的形式挂载到容器中</li></ol><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/3%20-%201620.jpg data-srcset="https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/3%20-%201620.jpg, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/3%20-%201620.jpg 1.5x, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/3%20-%201620.jpg 2x" data-sizes=auto alt=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/3%20-%201620.jpg title=hostPath的容器挂载信息></p><ol><li>模拟容器重启的的故障，容器重启后volume中的数据依保留</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=err>#</span><span class=nx>docker层面kill掉进程</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>3</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>docker</span> <span class=nx>container</span>  <span class=nx>list</span> <span class=o>|</span><span class=nx>grep</span> <span class=nx>hostpath</span>
+<span class=mi>39</span><span class=nx>a7e21afebb</span>        <span class=nx>f949e7d76d63</span>           <span class=s2>&#34;nginx -g &#39;daemon of…&#34;</span>   <span class=mi>11</span> <span class=nx>minutes</span> <span class=nx>ago</span>      <span class=nx>Up</span> <span class=mi>11</span> <span class=nx>minutes</span>                                <span class=nx>k8s_nginx_hostpath</span><span class=o>-</span><span class=nx>demo_default_6da41e3d</span><span class=o>-</span><span class=mi>8585</span><span class=o>-</span><span class=mi>4997</span><span class=o>-</span><span class=nx>bf90</span><span class=o>-</span><span class=mi>255</span><span class=nx>ca0948030_0</span>
+<span class=mi>490</span><span class=nx>f50108e41</span>        <span class=nx>k8s</span><span class=p>.</span><span class=nx>gcr</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>pause</span><span class=o>:</span><span class=mf>3.1</span>   <span class=s2>&#34;/pause&#34;</span>                 <span class=mi>11</span> <span class=nx>minutes</span> <span class=nx>ago</span>      <span class=nx>Up</span> <span class=mi>11</span> <span class=nx>minutes</span>                                <span class=nx>k8s_POD_hostpath</span><span class=o>-</span><span class=nx>demo_default_6da41e3d</span><span class=o>-</span><span class=mi>8585</span><span class=o>-</span><span class=mi>4997</span><span class=o>-</span><span class=nx>bf90</span><span class=o>-</span><span class=mi>255</span><span class=nx>ca0948030_0</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>3</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>docker</span> <span class=nx>container</span> <span class=nx>kill</span> <span class=mi>39</span><span class=nx>a7e21afebb</span>
+<span class=mi>39</span><span class=nx>a7e21afebb</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>3</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>exit</span>
+<span class=nx>登出</span>
+
+
+<span class=err>#</span><span class=nx>获取pod的地址</span><span class=err>，</span><span class=nx>通过RESTART可知</span><span class=err>，</span><span class=nx>容器重启过一次</span><span class=err>，</span><span class=nx>测试数据依旧保留</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>get</span> <span class=nx>pods</span> <span class=o>-</span><span class=nx>o</span> <span class=nx>wide</span>  <span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span> 
+<span class=nx>NAME</span>                                   <span class=nx>READY</span>   <span class=nx>STATUS</span>    <span class=nx>RESTARTS</span>   <span class=nx>AGE</span>   <span class=nx>IP</span>            <span class=nx>NODE</span>     <span class=nx>NOMINATED</span> <span class=nx>NODE</span>   <span class=nx>READINESS</span> <span class=nx>GATES</span>
+<span class=nx>hostpath</span><span class=o>-</span><span class=nx>demo</span>                          <span class=mi>1</span><span class=o>/</span><span class=mi>1</span>     <span class=nx>Running</span>   <span class=mi>1</span>          <span class=mi>12</span><span class=nx>m</span>   <span class=mf>10.244.2.24</span>   <span class=nx>node</span><span class=o>-</span><span class=mi>3</span>   <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>           <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>curl</span> <span class=nx>http</span><span class=o>:</span><span class=c1>//10.244.2.24
+</span><span class=c1></span><span class=nx>hostPath</span> <span class=nx>test</span> <span class=nx>page</span>
+</code></pre></td></tr></table></div></div><p><strong>小结</strong>：hostPath与emptyDir类似提供临时的存储，hostPath适用于一些容器需要访问宿主机目录或文件的场景，对于数据持久化而言都不是很好的实现方案。</p><h2 id=14--nfs存储对接>1.4 NFS存储对接</h2><p>NFS是实现Network File System网络文件共享的NAS存储，kubernetes与NFS对接实现存储的共享，当容器删除不影响存储且可以实现跨机存储共享，本文以搭建一个NFS存储实现kubernetes对接。</p><ol><li>准备一个nfs server共享，将node-1的/mnt/data目录共享</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=nx>安装nfs服务</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>yum</span> <span class=nx>install</span> <span class=nx>nfs</span><span class=o>-</span><span class=nx>utils</span> <span class=o>-</span><span class=nx>y</span>
+
+<span class=nx>配置nfs共享</span><span class=p>,</span><span class=nx>提前创建好目录</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>cat</span> <span class=o>/</span><span class=nx>etc</span><span class=o>/</span><span class=nx>exports</span>
+<span class=err>/mnt/data	10.254.100.0/24(rw)</span>
+
+<span class=nx>重启并验证</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>systemctl</span> <span class=nx>restart</span> <span class=nx>nfs</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>showmount</span> <span class=o>-</span><span class=nx>e</span> <span class=nx>node</span><span class=o>-</span><span class=mi>1</span>
+<span class=nx>Export</span> <span class=nx>list</span> <span class=k>for</span> <span class=nx>node</span><span class=o>-</span><span class=mi>1</span><span class=o>:</span>
+<span class=err>/mnt/data 10.254.100.0/24</span>
+</code></pre></td></tr></table></div></div><ol><li>kubernets使用nfs的驱动对接</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>cat</span> <span class=nx>nfs</span><span class=o>-</span><span class=nx>demo</span><span class=p>.</span><span class=nx>yaml</span> 
+<span class=nx>apiVersion</span><span class=o>:</span> <span class=nx>v1</span>
+<span class=nx>kind</span><span class=o>:</span> <span class=nx>Pod</span>
+<span class=nx>metadata</span><span class=o>:</span>
+  <span class=nx>name</span><span class=o>:</span> <span class=nx>nfs</span><span class=o>-</span><span class=nx>demo</span> 
+  <span class=nx>labels</span><span class=o>:</span>
+    <span class=nx>storage</span><span class=o>:</span> <span class=nx>nfs</span> 
+  <span class=nx>annotations</span><span class=o>:</span>
+    <span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>storage</span><span class=o>:</span> <span class=nx>nfs</span>
+<span class=nx>spec</span><span class=o>:</span>
+  <span class=nx>containers</span><span class=o>:</span>
+  <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>nginx</span>
+    <span class=nx>image</span><span class=o>:</span> <span class=nx>nginx</span><span class=o>:</span><span class=nx>latest</span>
+    <span class=nx>imagePullPolicy</span><span class=o>:</span> <span class=nx>IfNotPresent</span>
+    <span class=nx>ports</span><span class=o>:</span>
+    <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>nginx</span><span class=o>-</span><span class=nx>http</span><span class=o>-</span><span class=nx>port</span>
+      <span class=nx>protocol</span><span class=o>:</span> <span class=nx>TCP</span>
+      <span class=nx>containerPort</span><span class=o>:</span> <span class=mi>80</span>
+    <span class=nx>volumeMounts</span><span class=o>:</span> <span class=err>#</span><span class=nx>挂载到nfs的目录下</span>
+    <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>nfs</span><span class=o>-</span><span class=nx>demo</span> 
+      <span class=nx>mountPath</span><span class=o>:</span> <span class=err>/usr/share/nginx/html</span>
+  <span class=nx>volumes</span><span class=o>:</span> <span class=err>#</span><span class=nx>定义一个nfs驱动的存储</span>
+  <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>nfs</span><span class=o>-</span><span class=nx>demo</span>
+    <span class=nx>nfs</span><span class=o>:</span>
+      <span class=nx>server</span><span class=o>:</span> <span class=mf>10.254.100.101</span>
+      <span class=nx>path</span><span class=o>:</span> <span class=err>/mnt/data</span>
+</code></pre></td></tr></table></div></div><ol><li>生成pod，使用kubectl get pods的时候提示events中报错信息，挂载失败</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=nx>Events</span><span class=o>:</span>
+  <span class=nx>Type</span>     <span class=nx>Reason</span>       <span class=nx>Age</span>   <span class=nx>From</span>               <span class=nx>Message</span>
+  <span class=o>----</span>     <span class=o>------</span>       <span class=o>----</span>  <span class=o>----</span>               <span class=o>-------</span>
+  <span class=nx>Normal</span>   <span class=nx>Scheduled</span>    <span class=mi>40</span><span class=nx>s</span>   <span class=k>default</span><span class=o>-</span><span class=nx>scheduler</span>  <span class=nx>Successfully</span> <span class=nx>assigned</span> <span class=k>default</span><span class=err>/nfs-demo to node-2</span>
+  <span class=nx>Warning</span>  <span class=nx>FailedMount</span>  <span class=mi>39</span><span class=nx>s</span>   <span class=nx>kubelet</span><span class=p>,</span> <span class=nx>node</span><span class=o>-</span><span class=mi>2</span>    <span class=nx>MountVolume</span><span class=p>.</span><span class=nx>SetUp</span> <span class=nx>failed</span> <span class=k>for</span> <span class=nx>volume</span> <span class=s2>&#34;nfs-demo&#34;</span> <span class=o>:</span> <span class=nx>mount</span> <span class=nx>failed</span><span class=o>:</span> <span class=nx>exit</span> <span class=nx>status</span> <span class=mi>32</span>
+<span class=nx>Mounting</span> <span class=nx>command</span><span class=o>:</span> <span class=nx>systemd</span><span class=o>-</span><span class=nx>run</span>
+<span class=nx>Mounting</span> <span class=nx>arguments</span><span class=o>:</span> <span class=o>--</span><span class=nx>description</span><span class=o>=</span><span class=nx>Kubernetes</span> <span class=kr>transient</span> <span class=nx>mount</span> <span class=k>for</span> <span class=err>/var/lib/kubelet/pods/78bf6a81-082d-4d6c-a163-75241bf21cde/volumes/kubernetes.io~nfs/nfs-demo --scope -- mount -t nfs 10.254.100.101:/mnt/data /var/lib/kubelet/pods/78bf6a81-082d-4d6c-a163-75241bf21cde/volumes/kubernetes.io~nfs/nfs-demo</span>
+<span class=nx>Output</span><span class=o>:</span> <span class=nx>Running</span> <span class=nx>scope</span> <span class=nx>as</span> <span class=nx>unit</span> <span class=nx>run</span><span class=o>-</span><span class=mf>29843.</span><span class=nx>scope</span><span class=p>.</span>
+<span class=nx>mount</span><span class=o>:</span> <span class=nx>wrong</span> <span class=nx>fs</span> <span class=nx>type</span><span class=p>,</span> <span class=nx>bad</span> <span class=nx>option</span><span class=p>,</span> <span class=nx>bad</span> <span class=nx>superblock</span> <span class=nx>on</span> <span class=mf>10.254.100.101</span><span class=o>:</span><span class=err>/mnt/data,</span>
+       <span class=nx>missing</span> <span class=nx>codepage</span> <span class=nx>or</span> <span class=nx>helper</span> <span class=nx>program</span><span class=p>,</span> <span class=nx>or</span> <span class=nx>other</span> <span class=nx>error</span>
+       <span class=p>(</span><span class=k>for</span> <span class=nx>several</span> <span class=nx>filesystems</span> <span class=p>(</span><span class=nx>e</span><span class=p>.</span><span class=nx>g</span><span class=p>.</span> <span class=nx>nfs</span><span class=p>,</span> <span class=nx>cifs</span><span class=p>)</span> <span class=nx>you</span> <span class=nx>might</span>
+       <span class=nx>need</span> <span class=nx>a</span> <span class=o>/</span><span class=nx>sbin</span><span class=o>/</span><span class=nx>mount</span><span class=p>.</span><span class=o>&lt;</span><span class=nx>type</span><span class=o>&gt;</span> <span class=nx>helper</span> <span class=nx>program</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><ol><li>从上面的步骤中得知，宿主机挂载nfs的时候提示没有mount.nfs的命令，因此需要在所有的node节点上安装上nfs的客户端软件nfs-utils,以node-2为例，其他节点类似</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>ssh</span> <span class=nx>node</span><span class=o>-</span><span class=mi>2</span>
+<span class=nx>Last</span> <span class=nx>login</span><span class=o>:</span> <span class=nx>Tue</span> <span class=nx>Oct</span>  <span class=mi>8</span> <span class=mi>15</span><span class=o>:</span><span class=mi>22</span><span class=o>:</span><span class=mi>04</span> <span class=mi>2019</span> <span class=nx>from</span> <span class=mf>10.254.100.101</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>2</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>yum</span> <span class=nx>install</span> <span class=nx>nfs</span><span class=o>-</span><span class=nx>utils</span> <span class=o>-</span><span class=nx>y</span>
+</code></pre></td></tr></table></div></div><ol><li>测试站点数据</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>get</span> <span class=nx>pods</span> <span class=nx>nfs</span><span class=o>-</span><span class=nx>demo</span> <span class=o>-</span><span class=nx>o</span> <span class=nx>wide</span> 
+<span class=nx>NAME</span>       <span class=nx>READY</span>   <span class=nx>STATUS</span>    <span class=nx>RESTARTS</span>   <span class=nx>AGE</span>     <span class=nx>IP</span>            <span class=nx>NODE</span>     <span class=nx>NOMINATED</span> <span class=nx>NODE</span>   <span class=nx>READINESS</span> <span class=nx>GATES</span>
+<span class=nx>nfs</span><span class=o>-</span><span class=nx>demo</span>   <span class=mi>1</span><span class=o>/</span><span class=mi>1</span>     <span class=nx>Running</span>   <span class=mi>0</span>          <span class=mi>4</span><span class=nx>m41s</span>   <span class=mf>10.244.1.28</span>   <span class=nx>node</span><span class=o>-</span><span class=mi>2</span>   <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>           <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>echo</span> <span class=s2>&#34;nfs test age&#34;</span> <span class=o>&gt;</span><span class=err>/mnt/data/index.html</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>curl</span> <span class=nx>http</span><span class=o>:</span><span class=c1>//10.244.1.28
+</span><span class=c1></span><span class=nx>nfs</span> <span class=nx>test</span> <span class=nx>age</span>
+</code></pre></td></tr></table></div></div><ol><li>删除pod后查看nfs共享的数据情况,原有数据依旧保留</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=k>delete</span> <span class=nx>pods</span> <span class=nx>nfs</span><span class=o>-</span><span class=nx>demo</span> 
+<span class=nx>pod</span> <span class=s2>&#34;nfs-demo&#34;</span> <span class=nx>deleted</span>
+
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>mount</span><span class=p>.</span><span class=nx>nfs</span> <span class=nx>node</span><span class=o>-</span><span class=mi>1</span><span class=o>:</span><span class=err>/mnt/data/ /media/</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>ls</span> <span class=o>-</span><span class=nx>l</span> <span class=o>/</span><span class=nx>media</span><span class=o>/</span>
+<span class=nx>总用量</span> <span class=mi>4</span>
+<span class=o>-</span><span class=nx>rw</span><span class=o>-</span><span class=nx>r</span><span class=o>--</span><span class=nx>r</span><span class=o>--</span> <span class=mi>1</span> <span class=nx>root</span> <span class=nx>root</span> <span class=mi>13</span> <span class=mi>10</span><span class=nx>月</span>  <span class=mi>8</span> <span class=mi>23</span><span class=o>:</span><span class=mi>26</span> <span class=nx>index</span><span class=p>.</span><span class=nx>html</span>
+</code></pre></td></tr></table></div></div><h2 id=15-tke使用volume存储>1.5 TKE使用volume存储</h2><p>TKE支持在创建Workload时如Deployments，DaemonSets，StatefulSets等指定存储卷，支持临时目录emptyDir，主机路径hostPath，nfs盘，pvc，云硬盘，configmap，secrets，此处以腾讯云CFS为例（提前在CFS中创建好存储，确保CFS和容器宿主机在同一个VPC网络内）。</p><ol><li>创建存储卷，使用NFS挂载腾讯云CFS存储</li></ol><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/4%20-%201620.jpg data-srcset="https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/4%20-%201620.jpg, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/4%20-%201620.jpg 1.5x, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/4%20-%201620.jpg 2x" data-sizes=auto alt=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/4%20-%201620.jpg title=TKE创建nfs的volume></p><ol><li>Pod中使用存储，通过volume-nfs-demo名字调用存储卷</li></ol><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/5%20-%201620.jpg data-srcset="https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/5%20-%201620.jpg, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/5%20-%201620.jpg 1.5x, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/5%20-%201620.jpg 2x" data-sizes=auto alt=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E5%88%9D%E8%AF%86Pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/5%20-%201620.jpg title=TKE中pod使用volume存储></p><ol><li>对应生成的yaml文件内容如下</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=nx>apiVersion</span><span class=o>:</span> <span class=nx>apps</span><span class=o>/</span><span class=nx>v1beta2</span>
+<span class=nx>kind</span><span class=o>:</span> <span class=nx>Deployment</span>
+<span class=nx>metadata</span><span class=o>:</span>
+  <span class=nx>annotations</span><span class=o>:</span>
+    <span class=nx>deployment</span><span class=p>.</span><span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>revision</span><span class=o>:</span> <span class=s2>&#34;1&#34;</span>
+    <span class=nx>description</span><span class=o>:</span> <span class=nx>demo</span>
+  <span class=nx>creationTimestamp</span><span class=o>:</span> <span class=s2>&#34;2019-10-08T15:45:18Z&#34;</span>
+  <span class=nx>generation</span><span class=o>:</span> <span class=mi>1</span>
+  <span class=nx>labels</span><span class=o>:</span>
+    <span class=nx>k8s</span><span class=o>-</span><span class=nx>app</span><span class=o>:</span> <span class=nx>the</span><span class=o>-</span><span class=nx>volume</span><span class=o>-</span><span class=nx>demo</span>
+    <span class=nx>qcloud</span><span class=o>-</span><span class=nx>app</span><span class=o>:</span> <span class=nx>the</span><span class=o>-</span><span class=nx>volume</span><span class=o>-</span><span class=nx>demo</span>
+  <span class=nx>name</span><span class=o>:</span> <span class=nx>the</span><span class=o>-</span><span class=nx>volume</span><span class=o>-</span><span class=nx>demo</span>
+  <span class=nx>namespace</span><span class=o>:</span> <span class=k>default</span>
+  <span class=nx>resourceVersion</span><span class=o>:</span> <span class=s2>&#34;618380753&#34;</span>
+  <span class=nx>selfLink</span><span class=o>:</span> <span class=err>/apis/apps/v1beta2/namespaces/default/deployments/the-volume-demo</span>
+  <span class=nx>uid</span><span class=o>:</span> <span class=nx>a0fc4600</span><span class=o>-</span><span class=nx>e9e2</span><span class=o>-</span><span class=mi>11</span><span class=nx>e9</span><span class=o>-</span><span class=nx>b3f4</span><span class=o>-</span><span class=nx>decf0ef369cf</span>
+<span class=nx>spec</span><span class=o>:</span>
+  <span class=nx>minReadySeconds</span><span class=o>:</span> <span class=mi>10</span>
+  <span class=nx>progressDeadlineSeconds</span><span class=o>:</span> <span class=mi>600</span>
+  <span class=nx>replicas</span><span class=o>:</span> <span class=mi>1</span>
+  <span class=nx>revisionHistoryLimit</span><span class=o>:</span> <span class=mi>10</span>
+  <span class=nx>selector</span><span class=o>:</span>
+    <span class=nx>matchLabels</span><span class=o>:</span>
+      <span class=nx>k8s</span><span class=o>-</span><span class=nx>app</span><span class=o>:</span> <span class=nx>the</span><span class=o>-</span><span class=nx>volume</span><span class=o>-</span><span class=nx>demo</span>
+      <span class=nx>qcloud</span><span class=o>-</span><span class=nx>app</span><span class=o>:</span> <span class=nx>the</span><span class=o>-</span><span class=nx>volume</span><span class=o>-</span><span class=nx>demo</span>
+  <span class=nx>strategy</span><span class=o>:</span>
+    <span class=nx>rollingUpdate</span><span class=o>:</span>
+      <span class=nx>maxSurge</span><span class=o>:</span> <span class=mi>1</span>
+      <span class=nx>maxUnavailable</span><span class=o>:</span> <span class=mi>0</span>
+    <span class=nx>type</span><span class=o>:</span> <span class=nx>RollingUpdate</span>
+  <span class=nx>template</span><span class=o>:</span>
+    <span class=nx>metadata</span><span class=o>:</span>
+      <span class=nx>creationTimestamp</span><span class=o>:</span> <span class=kc>null</span>
+      <span class=nx>labels</span><span class=o>:</span>
+        <span class=nx>k8s</span><span class=o>-</span><span class=nx>app</span><span class=o>:</span> <span class=nx>the</span><span class=o>-</span><span class=nx>volume</span><span class=o>-</span><span class=nx>demo</span>
+        <span class=nx>qcloud</span><span class=o>-</span><span class=nx>app</span><span class=o>:</span> <span class=nx>the</span><span class=o>-</span><span class=nx>volume</span><span class=o>-</span><span class=nx>demo</span>
+    <span class=nx>spec</span><span class=o>:</span>
+      <span class=nx>containers</span><span class=o>:</span>
+      <span class=o>-</span> <span class=nx>image</span><span class=o>:</span> <span class=nx>nginx</span><span class=o>:</span><span class=nx>latest</span>
+        <span class=nx>imagePullPolicy</span><span class=o>:</span> <span class=nx>Always</span>
+        <span class=nx>name</span><span class=o>:</span> <span class=nx>nginx</span><span class=o>-</span><span class=nx>demo</span>
+        <span class=nx>resources</span><span class=o>:</span>
+          <span class=nx>limits</span><span class=o>:</span>
+            <span class=nx>cpu</span><span class=o>:</span> <span class=mi>500</span><span class=nx>m</span>
+            <span class=nx>memory</span><span class=o>:</span> <span class=mi>1</span><span class=nx>Gi</span>
+          <span class=nx>requests</span><span class=o>:</span>
+            <span class=nx>cpu</span><span class=o>:</span> <span class=mi>250</span><span class=nx>m</span>
+            <span class=nx>memory</span><span class=o>:</span> <span class=mi>256</span><span class=nx>Mi</span>
+        <span class=nx>securityContext</span><span class=o>:</span>
+          <span class=nx>privileged</span><span class=o>:</span> <span class=kc>false</span>
+        <span class=nx>terminationMessagePath</span><span class=o>:</span> <span class=err>/dev/termination-log</span>
+        <span class=nx>terminationMessagePolicy</span><span class=o>:</span> <span class=nx>File</span>
+        <span class=nx>volumeMounts</span><span class=o>:</span> <span class=err>#</span><span class=nx>挂载到pod中</span>
+        <span class=o>-</span> <span class=nx>mountPath</span><span class=o>:</span> <span class=err>/usr/share/nginx/html</span>
+          <span class=nx>name</span><span class=o>:</span> <span class=nx>volume</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>demo</span>
+      <span class=nx>dnsPolicy</span><span class=o>:</span> <span class=nx>ClusterFirst</span>
+      <span class=nx>imagePullSecrets</span><span class=o>:</span>
+      <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>qcloudregistrykey</span>
+      <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>tencenthubkey</span>
+      <span class=nx>restartPolicy</span><span class=o>:</span> <span class=nx>Always</span>
+      <span class=nx>schedulerName</span><span class=o>:</span> <span class=k>default</span><span class=o>-</span><span class=nx>scheduler</span>
+      <span class=nx>securityContext</span><span class=o>:</span> <span class=p>{}</span>
+      <span class=nx>terminationGracePeriodSeconds</span><span class=o>:</span> <span class=mi>30</span>
+      <span class=nx>volumes</span><span class=o>:</span> <span class=err>#</span><span class=nx>CFS存储</span>
+      <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>volume</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>demo</span>
+        <span class=nx>nfs</span><span class=o>:</span>
+          <span class=nx>path</span><span class=o>:</span> <span class=err>/</span>
+          <span class=nx>server</span><span class=o>:</span> <span class=mf>10.66.200.7</span>
+</code></pre></td></tr></table></div></div><h1 id=写在最后>写在最后</h1><p>本文介绍了kubernetes存储中最基本volume的使用，介绍了volume支持多种不同驱动，以实际案例介绍emptyDir，hostPath，nfs驱动的对接，并介绍了TKE下volume功能的使用。由于volume需要知道底层存储的细节，不便于广泛使用，后来衍生为PV，管理员定义PV实现和底层存储对接，用户通过PVC使用PV，下节我们将介绍PV/PVC和StorageClass的使用。</p><h1 id=参考文献>参考文献</h1><p>volume管理：https://kubernetes.io/docs/concepts/storage/volumes/</p><p>pod中使用volume：https://kubernetes.io/docs/tasks/configure-pod-container/configure-volume-storage/</p><blockquote><p>『 转载 』该文章来源于网络，侵删。</p></blockquote></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2019-08-04</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://agou-ops.cn/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/ data-title="09 初识Pod存储管理" data-hashtags=kubernetes><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://agou-ops.cn/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/ data-hashtag=kubernetes><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 Hacker News" data-sharer=hackernews data-url=https://agou-ops.cn/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/ data-title="09 初识Pod存储管理"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="分享到 Line" data-sharer=line data-url=https://agou-ops.cn/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/ data-title="09 初识Pod存储管理"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/line.svg></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://agou-ops.cn/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/ data-title="09 初识Pod存储管理" data-ralateuid=AGou-ops><i class="fab fa-weibo fa-fw"></i></a><a href=javascript:void(0); title="分享到 百度" data-sharer=baidu data-url=https://agou-ops.cn/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/ data-title="09 初识Pod存储管理"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/baidu.svg></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/myBlog-2/tags/kubernetes/>kubernetes</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>返回</a></span>&nbsp;|&nbsp;<span><a href=/myBlog-2/>主页</a></span></section></div><div class=post-nav><a href=/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/ class=prev rel=prev title="10 深入学习持久化存储PV和PVC"><i class="fas fa-angle-left fa-fw"></i>10 深入学习持久化存储PV和PVC</a>
+<a href=/myBlog-2/post/08-pod%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E6%9C%BA%E5%88%B6/ class=next rel=next title="08 Pod健康检查机制">08 Pod健康检查机制<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=utterances></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://utteranc.es/>Utterances</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><a href=https://agou-ops.github.io target=_blank rel="noopener noreferrer" style=color:red>【AGou-ops.top】</a> 备份站点</div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.75.1">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2018 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/myBlog-2/ target=_blank>AGou-ops</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span><span class=icp-splitter>&nbsp;|&nbsp;</span><br class=icp-br><span class=icp>鲁ICP备19050296号-2</span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"AGou-ops/comments"}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"5M8VQRD7W9","algoliaIndex":"blog-2","algoliaSearchKey":"2fcdbd0ce638664e7a28cc64939603b9","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"twemoji":true};</script><script type=text/javascript src=/myBlog-2/js/theme.min.js></script></body></html>

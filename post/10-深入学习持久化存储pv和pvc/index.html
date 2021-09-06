@@ -1,0 +1,334 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>10 深入学习持久化存储PV和PVC - AGou's Blog-2</title><meta name=Description content="关于博主"><meta property="og:title" content="10 深入学习持久化存储PV和PVC"><meta property="og:description" content="写在前面 上一篇文章中kubernetes系列教程（九）初识Pod存储管理介绍了kubernetes中存储Volume的使用，volume支持"><meta property="og:type" content="article"><meta property="og:url" content="https://agou-ops.cn/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/"><meta property="og:image" content="https://agou-images.oss-cn-qingdao.aliyuncs.com/BaseIMG/tuoer.jpg"><meta property="article:published_time" content="2019-08-04T10:36:48+08:00"><meta property="article:modified_time" content="2019-08-04T10:36:48+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://agou-images.oss-cn-qingdao.aliyuncs.com/BaseIMG/tuoer.jpg"><meta name=twitter:title content="10 深入学习持久化存储PV和PVC"><meta name=twitter:description content="写在前面 上一篇文章中kubernetes系列教程（九）初识Pod存储管理介绍了kubernetes中存储Volume的使用，volume支持"><meta name=application-name content="AGou's Blog-2."><meta name=apple-mobile-web-app-title content="AGou's Blog-2."><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://agou-ops.cn/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/><link rel=prev href=https://agou-ops.cn/myBlog-2/post/11-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0deployment%E6%8E%A7%E5%88%B6%E5%99%A8/><link rel=next href=https://agou-ops.cn/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/myBlog-2/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"10 深入学习持久化存储PV和PVC","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/agou-ops.cn\/myBlog-2\/post\/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc\/"},"image":["https:\/\/agou-images.oss-cn-qingdao.aliyuncs.com\/BaseIMG\/tuoer.jpg"],"genre":"posts","keywords":"kubernetes","wordcount":3045,"url":"https:\/\/agou-ops.cn\/myBlog-2\/post\/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc\/","datePublished":"2019-08-04T10:36:48+08:00","dateModified":"2019-08-04T10:36:48+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"AGou-ops","logo":"https:\/\/agou-images.oss-cn-qingdao.aliyuncs.com\/BaseIMG\/tuoer.jpg"},"author":{"@type":"Person","name":"AGou-ops"},"description":""}</script></head><body header-desktop=auto header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/myBlog-2/ title="AGou's Blog-2"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>AGou-ops</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/myBlog-2/posts/>所有文章 </a><a class=menu-item href=/myBlog-2/tags/>标签 </a><a class=menu-item href=/myBlog-2/categories/>分类 </a><a class=menu-item href=/myBlog-2/Anime/>Anime </a><a class=menu-item href=/myBlog-2/about/>关于 </a><a class=menu-item href=https://github.com/AGou-ops title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select id=language-select-desktop onchange="location=this.value;"><option value=/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/myBlog-2/ title="AGou's Blog-2"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>AGou-ops</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/myBlog-2/posts/>所有文章</a><a class=menu-item href=/myBlog-2/tags/>标签</a><a class=menu-item href=/myBlog-2/categories/>分类</a><a class=menu-item href=/myBlog-2/Anime/>Anime</a><a class=menu-item href=/myBlog-2/about/>关于</a><a class=menu-item href=https://github.com/AGou-ops title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a><a href=javascript:void(0); class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select onchange="location=this.value;"><option value=/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">10 深入学习持久化存储PV和PVC</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/myBlog-2/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>AGou-ops</a></span>&nbsp;<span class=post-category>收录于 <a href=/myBlog-2/categories/%E8%BD%AC%E8%BD%BD/><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href=/myBlog-2/categories/kubernetes/><i class="far fa-folder fa-fw"></i>kubernetes</a>&nbsp;<a href=/myBlog-2/categories/%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/><i class="far fa-folder fa-fw"></i>基础教程</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-08-04>2019-08-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3045 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#11-pv概念介绍>1.1 PV概念介绍</a></li><li><a href=#12-定义pv存储>1.2 定义PV存储</a></li><li><a href=#13-pvc引用pv>1.3. PVC引用PV</a></li><li><a href=#14-pod引用pvc>1.4 Pod引用PVC</a></li></ul></nav></div></div><div class=content id=content><h1 id=写在前面>写在前面</h1><p>上一篇文章中<a href=# rel>kubernetes系列教程（九）初识Pod存储管理</a>介绍了kubernetes中存储Volume的使用，volume支持多种不同的内置驱动，使用volumes需要知道后端驱动的细节，使用起来不方便，因此社区提出了PV概念，即通过管理员定义好PV，通过PVC使用PV；随着PV数量的不断增加，管理员需要频繁定义PV，因此提出了动态存储StorageClass，通过PVC中调用StorageClass动态创建PV，接下来介绍<a href=# rel>kubernetes系列教程</a>高级进阶PV/PVC。</p><h1 id=1-pv与pvc存储>1. PV与PVC存储</h1><h2 id=11-pv概念介绍>1.1 PV概念介绍</h2><ul><li>PV即PersistentVolume持久化存储，是管理员定义的一块存储空间，能抽象化底层存储细节，和node类似，PV是集群级别的资源，生命周期独立于Pod，支持静态创建和动态创建，动态创建需通过StorageClass。</li><li>PVC即PersistentVolumeClaim持久化存储申明，作为PV资源的使用方，可以指定请求存储容量大小和访问模式</li><li>StorageClass，存储类型支持创建PV，通过在PVC中指定StorageClass可动态创建PV，且支持指定不同的存储</li></ul><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/1%20-%201620.jpg data-srcset="https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/1%20-%201620.jpg, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/1%20-%201620.jpg 1.5x, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/1%20-%201620.jpg 2x" data-sizes=auto alt=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/1%20-%201620.jpg title=PV/PVC概念介绍></p><p>PV支持设置字段介绍：</p><ul><li>Capacity 存储的特性，当前只支持通过capacity指定存储大小，未来会支持IOPS，吞吐量等指标</li><li>VolumeMode 存储卷的类型，默认为filesystem，如果是块设备指定为block</li><li>Class 通过storageClassName指定静态StorageClass的名称</li><li>Reclaim Policy 回收策略，支持Retain保留，Recycle回收，DELETE删除</li><li>Volume驱动类型，和上一篇文章介绍的类似，支持不同的plugin驱动如RBD，NFS</li><li>Mount Options 挂载模式，支持管理员定义不同的挂载选项</li><li>AccessMode 访问模式，指定node的挂载方式，支持ReadWriteOnce读写挂载一次，ReadOnlyMany多个节点挂载只读模式，ReadWriteMany多个节点挂载读写模式，不同的volume驱动类型支持的模式有所不同，如下</li></ul><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/2%20-%201620.jpg data-srcset="https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/2%20-%201620.jpg, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/2%20-%201620.jpg 1.5x, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/2%20-%201620.jpg 2x" data-sizes=auto alt=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/2%20-%201620.jpg title=PV支持的不同AccessMode></p><h2 id=12-定义pv存储>1.2 定义PV存储</h2><p>接下来我们开始学习PV的使用，使用阶段分为：1. 预先创建好PV，2. 用户通过PVC调用PV，3. Pod中应用PVC，创建流程参考下图：</p><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/3%20-%201620.jpg data-srcset="https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/3%20-%201620.jpg, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/3%20-%201620.jpg 1.5x, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/3%20-%201620.jpg 2x" data-sizes=auto alt=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/3%20-%201620.jpg title=PV和PVC使用过程></p><p>\1. 定义一个PV，指定大小为10G，读写模式为单个node读写，回收模式为Retain，后端驱动plugin为NFS</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>cat</span> <span class=nx>pv</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span><span class=p>.</span><span class=nx>yaml</span> 
+<span class=nx>apiVersion</span><span class=o>:</span> <span class=nx>v1</span>
+<span class=nx>kind</span><span class=o>:</span> <span class=nx>PersistentVolume</span>
+<span class=nx>metadata</span><span class=o>:</span>
+  <span class=nx>name</span><span class=o>:</span> <span class=nx>pv</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span> 
+  <span class=nx>labels</span><span class=o>:</span>
+    <span class=nx>storage</span><span class=o>:</span> <span class=nx>nfs</span>
+  <span class=nx>annotations</span><span class=o>:</span>
+    <span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=p>.</span><span class=nx>description</span><span class=o>:</span> <span class=nx>pv</span><span class=o>-</span><span class=nx>storage</span>
+<span class=nx>spec</span><span class=o>:</span>
+  <span class=nx>storageClassName</span><span class=o>:</span> <span class=nx>nfs</span>  <span class=err>#</span><span class=nx>静态指定存储类StorageClass名称</span>
+  <span class=nx>capacity</span><span class=o>:</span>              <span class=err>#</span><span class=nx>capacity指定存储容量大小</span>
+    <span class=nx>storage</span><span class=o>:</span> <span class=mi>10</span><span class=nx>Gi</span>        
+  <span class=nx>accessModes</span><span class=o>:</span>           <span class=err>#</span><span class=nx>访问模式为单个节点读写模式</span>
+    <span class=o>-</span> <span class=nx>ReadWriteOnce</span>
+  <span class=nx>persistentVolumeReclaimPolicy</span><span class=o>:</span> <span class=nx>Retain</span>  <span class=err>#</span><span class=nx>回收模式为保留</span>
+  <span class=nx>nfs</span><span class=o>:</span>                  <span class=err>#</span><span class=nx>后端plugin驱动类型为NFS</span><span class=err>，</span><span class=nx>指定server和path路径</span>
+    <span class=nx>server</span><span class=o>:</span> <span class=mf>10.254.100.101</span>
+    <span class=nx>path</span><span class=o>:</span> <span class=err>/mnt/data</span>
+</code></pre></td></tr></table></div></div><p>\2. 创建PersistentVolumes</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>apply</span> <span class=o>-</span><span class=nx>f</span> <span class=nx>pv</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span><span class=p>.</span><span class=nx>yaml</span> 
+<span class=nx>persistentvolume</span><span class=o>/</span><span class=nx>pv</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span> <span class=nx>unchanged</span>
+</code></pre></td></tr></table></div></div><p>\3. 查看PersistentVolumes列表</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>get</span> <span class=nx>persistentvolumes</span> 
+<span class=nx>NAME</span>             <span class=nx>CAPACITY</span>   <span class=nx>ACCESS</span> <span class=nx>MODES</span>   <span class=nx>RECLAIM</span> <span class=nx>POLICY</span>   <span class=nx>STATUS</span>      <span class=nx>CLAIM</span>   <span class=nx>STORAGECLASS</span>   <span class=nx>REASON</span>   <span class=nx>AGE</span>
+<span class=nx>pv</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>   <span class=mi>10</span><span class=nx>Gi</span>       <span class=nx>RWO</span>            <span class=nx>Retain</span>           <span class=nx>Available</span>           <span class=nx>nfs</span>                     <span class=mi>43</span><span class=nx>m</span>
+</code></pre></td></tr></table></div></div><p>关于PV输出解释说明：</p><ol><li>ACCESS MODES 指定的是读写模式，RWO代表ReadWriteOnce，ROM代表ReadOnlyMany，RWX代表ReadWriteMany</li><li>STATUS代表PV状态，Available刚创建未绑定状态，Bound为与PVC绑定，Released为PVC删除PV未释放，Failed状态异常。</li></ol><p>\4. 查看PV详细信息,呈现的信息会更详细</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>describe</span> <span class=nx>persistentvolumes</span> <span class=nx>pv</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span> 
+<span class=nx>Name</span><span class=o>:</span>            <span class=nx>pv</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>
+<span class=nx>Labels</span><span class=o>:</span>          <span class=nx>storage</span><span class=o>=</span><span class=nx>nfs</span>
+<span class=nx>Annotations</span><span class=o>:</span>     <span class=nx>kubectl</span><span class=p>.</span><span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>last</span><span class=o>-</span><span class=nx>applied</span><span class=o>-</span><span class=nx>configuration</span><span class=o>:</span>
+                   <span class=p>{</span><span class=s2>&#34;apiVersion&#34;</span><span class=o>:</span><span class=s2>&#34;v1&#34;</span><span class=p>,</span><span class=s2>&#34;kind&#34;</span><span class=o>:</span><span class=s2>&#34;PersistentVolume&#34;</span><span class=p>,</span><span class=s2>&#34;metadata&#34;</span><span class=o>:</span><span class=p>{</span><span class=s2>&#34;annotations&#34;</span><span class=o>:</span><span class=p>{</span><span class=s2>&#34;kubernetes.io.description&#34;</span><span class=o>:</span><span class=s2>&#34;pv-storage&#34;</span><span class=p>},</span><span class=s2>&#34;labels&#34;</span><span class=o>:</span><span class=p>{</span><span class=s2>&#34;storage&#34;</span><span class=o>:</span><span class=err>&#34;</span><span class=nx>nfs</span><span class=p>...</span>
+                 <span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=p>.</span><span class=nx>description</span><span class=o>:</span> <span class=nx>pv</span><span class=o>-</span><span class=nx>storage</span>
+<span class=nx>Finalizers</span><span class=o>:</span>      <span class=p>[</span><span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>pv</span><span class=o>-</span><span class=nx>protection</span><span class=p>]</span>
+<span class=nx>StorageClass</span><span class=o>:</span>    <span class=nx>nfs</span>
+<span class=nx>Status</span><span class=o>:</span>          <span class=nx>Available</span>
+<span class=nx>Claim</span><span class=o>:</span>           
+<span class=nx>Reclaim</span> <span class=nx>Policy</span><span class=o>:</span>  <span class=nx>Retain</span>
+<span class=nx>Access</span> <span class=nx>Modes</span><span class=o>:</span>    <span class=nx>RWO</span>
+<span class=nx>VolumeMode</span><span class=o>:</span>      <span class=nx>Filesystem</span>
+<span class=nx>Capacity</span><span class=o>:</span>        <span class=mi>10</span><span class=nx>Gi</span>
+<span class=nx>Node</span> <span class=nx>Affinity</span><span class=o>:</span>   <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+<span class=nx>Message</span><span class=o>:</span>         
+<span class=nx>Source</span><span class=o>:</span>
+    <span class=nx>Type</span><span class=o>:</span>      <span class=nx>NFS</span> <span class=p>(</span><span class=nx>an</span> <span class=nx>NFS</span> <span class=nx>mount</span> <span class=nx>that</span> <span class=nx>lasts</span> <span class=nx>the</span> <span class=nx>lifetime</span> <span class=k>of</span> <span class=nx>a</span> <span class=nx>pod</span><span class=p>)</span>
+    <span class=nx>Server</span><span class=o>:</span>    <span class=mf>10.254.100.101</span>
+    <span class=nx>Path</span><span class=o>:</span>      <span class=err>/mnt/data</span>
+    <span class=nx>ReadOnly</span><span class=o>:</span>  <span class=kc>false</span>
+<span class=nx>Events</span><span class=o>:</span>        <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+</code></pre></td></tr></table></div></div><h2 id=13-pvc引用pv>1.3. PVC引用PV</h2><p>\1. 通过定义PVC，通过selector和PV实现关联，指定到相同的StorageClass</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>cat</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span><span class=p>.</span><span class=nx>yaml</span> 
+<span class=nx>apiVersion</span><span class=o>:</span> <span class=nx>v1</span>
+<span class=nx>kind</span><span class=o>:</span> <span class=nx>PersistentVolumeClaim</span>
+<span class=nx>metadata</span><span class=o>:</span>
+  <span class=nx>name</span><span class=o>:</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>
+  <span class=nx>labels</span><span class=o>:</span>
+    <span class=nx>storage</span><span class=o>:</span> <span class=nx>pvc</span>
+  <span class=nx>annotations</span><span class=o>:</span>
+    <span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>description</span><span class=o>:</span> <span class=s2>&#34;PersistentVolumeClaim for PV&#34;</span>
+<span class=nx>spec</span><span class=o>:</span>
+  <span class=nx>accessModes</span><span class=o>:</span>
+    <span class=o>-</span> <span class=nx>ReadWriteOnce</span>
+  <span class=nx>volumeMode</span><span class=o>:</span> <span class=nx>Filesystem</span>
+  <span class=nx>storageClassName</span><span class=o>:</span> <span class=nx>nfs</span>
+  <span class=nx>resources</span><span class=o>:</span>
+    <span class=nx>requests</span><span class=o>:</span>
+      <span class=nx>storage</span><span class=o>:</span> <span class=mi>1</span><span class=nx>Gi</span>
+    <span class=nx>limits</span><span class=o>:</span>
+      <span class=nx>storage</span><span class=o>:</span> <span class=mi>10</span><span class=nx>Gi</span>
+  <span class=nx>selector</span><span class=o>:</span>
+    <span class=nx>matchLabels</span><span class=o>:</span>
+      <span class=nx>storage</span><span class=o>:</span> <span class=nx>nfs</span>
+</code></pre></td></tr></table></div></div><p>\2. 生成PersistentVolumeClaim</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>apply</span> <span class=o>-</span><span class=nx>f</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span><span class=p>.</span><span class=nx>yaml</span> 
+<span class=nx>persistentvolumeclaim</span><span class=o>/</span><span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span> <span class=nx>created</span>
+</code></pre></td></tr></table></div></div><p>\3. 查看PersistentVolumeClaim列表,通过STATUS可以知道，当前PVC和PV已经Bond关联</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>get</span> <span class=nx>persistentvolumeclaims</span> 
+<span class=nx>NAME</span>              <span class=nx>STATUS</span>   <span class=nx>VOLUME</span>           <span class=nx>CAPACITY</span>   <span class=nx>ACCESS</span> <span class=nx>MODES</span>   <span class=nx>STORAGECLASS</span>   <span class=nx>AGE</span>
+<span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>   <span class=nx>Bound</span>    <span class=nx>pv</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>   <span class=mi>10</span><span class=nx>Gi</span>       <span class=nx>RWO</span>            <span class=nx>nfs</span>   
+
+<span class=nx>查看PVC详情</span><span class=err>：</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>describe</span> <span class=nx>persistentvolumeclaims</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span> 
+<span class=nx>Name</span><span class=o>:</span>          <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>
+<span class=nx>Namespace</span><span class=o>:</span>     <span class=k>default</span>
+<span class=nx>StorageClass</span><span class=o>:</span>  <span class=nx>nfs</span>
+<span class=nx>Status</span><span class=o>:</span>        <span class=nx>Bound</span>
+<span class=nx>Volume</span><span class=o>:</span>        <span class=nx>pv</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>
+<span class=nx>Labels</span><span class=o>:</span>        <span class=nx>storage</span><span class=o>=</span><span class=nx>pvc</span>
+<span class=nx>Annotations</span><span class=o>:</span>   <span class=nx>kubectl</span><span class=p>.</span><span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>last</span><span class=o>-</span><span class=nx>applied</span><span class=o>-</span><span class=nx>configuration</span><span class=o>:</span>
+                 <span class=p>{</span><span class=s2>&#34;apiVersion&#34;</span><span class=o>:</span><span class=s2>&#34;v1&#34;</span><span class=p>,</span><span class=s2>&#34;kind&#34;</span><span class=o>:</span><span class=s2>&#34;PersistentVolumeClaim&#34;</span><span class=p>,</span><span class=s2>&#34;metadata&#34;</span><span class=o>:</span><span class=p>{</span><span class=s2>&#34;annotations&#34;</span><span class=o>:</span><span class=p>{</span><span class=s2>&#34;kubernetes.io/description&#34;</span><span class=o>:</span><span class=s2>&#34;PersistentVolumeClaim for PV&#34;</span><span class=p>},</span><span class=err>&#34;</span><span class=p>...</span>
+               <span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>description</span><span class=o>:</span> <span class=nx>PersistentVolumeClaim</span> <span class=k>for</span> <span class=nx>PV</span>
+               <span class=nx>pv</span><span class=p>.</span><span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>bind</span><span class=o>-</span><span class=nx>completed</span><span class=o>:</span> <span class=nx>yes</span>
+               <span class=nx>pv</span><span class=p>.</span><span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>bound</span><span class=o>-</span><span class=nx>by</span><span class=o>-</span><span class=nx>controller</span><span class=o>:</span> <span class=nx>yes</span>
+<span class=nx>Finalizers</span><span class=o>:</span>    <span class=p>[</span><span class=nx>kubernetes</span><span class=p>.</span><span class=nx>io</span><span class=o>/</span><span class=nx>pvc</span><span class=o>-</span><span class=nx>protection</span><span class=p>]</span>
+<span class=nx>Capacity</span><span class=o>:</span>      <span class=mi>10</span><span class=nx>Gi</span>
+<span class=nx>Access</span> <span class=nx>Modes</span><span class=o>:</span>  <span class=nx>RWO</span>
+<span class=nx>VolumeMode</span><span class=o>:</span>    <span class=nx>Filesystem</span>
+<span class=nx>Mounted</span> <span class=nx>By</span><span class=o>:</span>    <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+<span class=nx>Events</span><span class=o>:</span>        <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>        
+</code></pre></td></tr></table></div></div><p>\4. 再次查看PV的状态，此时状态为Bond，和default命名空间下的PVC pvc-nfs-storage关联,此时PVC已经定义好</p><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/4%20-%201620.jpg data-srcset="https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/4%20-%201620.jpg, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/4%20-%201620.jpg 1.5x, https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/4%20-%201620.jpg 2x" data-sizes=auto alt=https://agou-images.oss-cn-qingdao.aliyuncs.com/blog-images/k8s%E5%9F%BA%E7%A1%80/kubernetes%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%88%E5%8D%81%EF%BC%89%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8PV%E5%92%8CPVC/4%20-%201620.jpg title=PV和PVC绑定状态详情></p><h2 id=14-pod引用pvc>1.4 Pod引用PVC</h2><p>PV和PVC定义好后，需要在Pod中引用定义的存储，引用方式和之前定义的类似，spec.containers.volumeMounts在Pod中引用定义的存储，前面的文章中我们直接通过Pod调用，本文案例通过将Pod以Template的形式定义封装在Deployment的控制器中，下篇文章我们再深入介绍Deployment，ReplicaSet，StatefulSet等副本控制器。</p><p>\1. 定义一个Deployments，通过deployment.spec.template.spec应用Pod,在volumes中调用PVC存储，volumeMounts将存储挂载到指定目录。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>cat</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployments</span><span class=p>.</span><span class=nx>yaml</span> 
+<span class=nx>apiVersion</span><span class=o>:</span> <span class=nx>apps</span><span class=o>/</span><span class=nx>v1</span> 
+<span class=nx>kind</span><span class=o>:</span> <span class=nx>Deployment</span>
+<span class=nx>metadata</span><span class=o>:</span>  <span class=err>#</span><span class=nx>deployment的元数据</span>
+  <span class=nx>name</span><span class=o>:</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span>
+  <span class=nx>labels</span><span class=o>:</span>
+    <span class=nx>app</span><span class=o>:</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span>
+<span class=nx>spec</span><span class=o>:</span>      <span class=err>#</span><span class=nx>deployment的属性信息</span>
+  <span class=nx>replicas</span><span class=o>:</span> <span class=mi>1</span>  <span class=err>#</span><span class=nx>副本控制数</span>
+  <span class=nx>selector</span><span class=o>:</span>
+    <span class=nx>matchLabels</span><span class=o>:</span>
+      <span class=nx>app</span><span class=o>:</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span>
+  <span class=nx>template</span><span class=o>:</span>    <span class=err>#</span><span class=nx>通过定义模板引用Pod</span><span class=err>，</span><span class=nx>template中的信息和Pod定义的信息一致</span><span class=err>，</span><span class=nx>包含metadata</span><span class=p>,</span><span class=nx>spec信息</span>
+    <span class=nx>metadata</span><span class=o>:</span>  <span class=err>#</span><span class=nx>定义Pod的labels</span>
+      <span class=nx>labels</span><span class=o>:</span>
+        <span class=nx>app</span><span class=o>:</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span>
+    <span class=nx>spec</span><span class=o>:</span>
+      <span class=nx>containers</span><span class=o>:</span>
+      <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>nginx</span><span class=o>-</span><span class=nx>web</span> 
+        <span class=nx>image</span><span class=o>:</span> <span class=nx>nginx</span><span class=o>:</span><span class=nx>latest</span>
+        <span class=nx>imagePullPolicy</span><span class=o>:</span> <span class=nx>IfNotPresent</span>
+        <span class=nx>ports</span><span class=o>:</span>
+        <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>nginx</span><span class=o>-</span><span class=nx>http</span><span class=o>-</span><span class=mi>80</span>
+          <span class=nx>protocol</span><span class=o>:</span> <span class=nx>TCP</span>
+          <span class=nx>containerPort</span><span class=o>:</span> <span class=mi>80</span>
+        <span class=nx>volumeMounts</span><span class=o>:</span>  <span class=err>#</span><span class=nx>将PVC存储挂载到目录</span>
+        <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>
+          <span class=nx>mountPath</span><span class=o>:</span> <span class=err>/usr/share/nginx/html </span>
+      <span class=nx>volumes</span><span class=o>:</span>    <span class=err>#</span><span class=nx>通过volumes引用persistentVolumeClaim存储</span>
+      <span class=o>-</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>
+        <span class=nx>persistentVolumeClaim</span><span class=o>:</span>
+          <span class=nx>claimName</span><span class=o>:</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>storage</span>
+</code></pre></td></tr></table></div></div><p>\2. 创建Deployments并查看创建情况和Pod情况</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=nx>创建Deployments</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>apply</span> <span class=o>-</span><span class=nx>f</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployments</span><span class=p>.</span><span class=nx>yaml</span> 
+<span class=nx>deployment</span><span class=p>.</span><span class=nx>apps</span><span class=o>/</span><span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span> <span class=nx>created</span>
+
+<span class=nx>查看Deployments列表</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>get</span> <span class=nx>deployments</span>
+<span class=nx>NAME</span>                 <span class=nx>READY</span>   <span class=nx>UP</span><span class=o>-</span><span class=nx>TO</span><span class=o>-</span><span class=nx>DATE</span>   <span class=nx>AVAILABLE</span>   <span class=nx>AGE</span>
+<span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span>   <span class=mi>1</span><span class=o>/</span><span class=mi>1</span>     <span class=mi>1</span>            <span class=mi>1</span>           <span class=mi>16</span><span class=nx>s</span>
+
+<span class=nx>查看Deployments中的Pod</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>get</span> <span class=nx>pods</span> <span class=o>-</span><span class=nx>l</span> <span class=nx>app</span><span class=o>=</span><span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span> <span class=o>-</span><span class=nx>o</span> <span class=nx>wide</span> 
+<span class=nx>NAME</span>                                  <span class=nx>READY</span>   <span class=nx>STATUS</span>    <span class=nx>RESTARTS</span>   <span class=nx>AGE</span>    <span class=nx>IP</span>            <span class=nx>NODE</span>     <span class=nx>NOMINATED</span> <span class=nx>NODE</span>   <span class=nx>READINESS</span> <span class=nx>GATES</span>
+<span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span><span class=o>-</span><span class=mi>7467</span><span class=nx>b9fbfc</span><span class=o>-</span><span class=nx>xwdpr</span>   <span class=mi>1</span><span class=o>/</span><span class=mi>1</span>     <span class=nx>Running</span>   <span class=mi>0</span>          <span class=mi>106</span><span class=nx>s</span>   <span class=mf>10.244.1.29</span>   <span class=nx>node</span><span class=o>-</span><span class=mi>2</span>   <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>           <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+</code></pre></td></tr></table></div></div><p>\3. Pod中查看存储挂载信息，并做数据读写。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=nx>happylau</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>exec</span> <span class=o>-</span><span class=nx>it</span> <span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span><span class=o>-</span><span class=mi>7467</span><span class=nx>b9fbfc</span><span class=o>-</span><span class=nx>xwdpr</span>  <span class=o>/</span><span class=nx>bin</span><span class=o>/</span><span class=nx>bash</span>
+<span class=nx>root</span><span class=err>@</span><span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span><span class=o>-</span><span class=mi>7467</span><span class=nx>b9fbfc</span><span class=o>-</span><span class=nx>xwdpr</span><span class=o>:</span><span class=err>/# df -h</span>
+<span class=nx>Filesystem</span>                <span class=nx>Size</span>  <span class=nx>Used</span> <span class=nx>Avail</span> <span class=nx>Use</span><span class=o>%</span> <span class=nx>Mounted</span> <span class=nx>on</span>
+<span class=nx>overlay</span>                    <span class=mi>50</span><span class=nx>G</span>  <span class=mf>4.3</span><span class=nx>G</span>   <span class=mi>43</span><span class=nx>G</span>  <span class=mi>10</span><span class=o>%</span> <span class=err>/</span>
+<span class=nx>tmpfs</span>                      <span class=mi>64</span><span class=nx>M</span>     <span class=mi>0</span>   <span class=mi>64</span><span class=nx>M</span>   <span class=mi>0</span><span class=o>%</span> <span class=err>/dev</span>
+<span class=nx>tmpfs</span>                     <span class=mi>920</span><span class=nx>M</span>     <span class=mi>0</span>  <span class=mi>920</span><span class=nx>M</span>   <span class=mi>0</span><span class=o>%</span> <span class=err>/sys/fs/cgroup</span>
+<span class=err>/dev/vda1                  50G  4.3G   43G  10% /etc/hosts</span>
+<span class=nx>shm</span>                        <span class=mi>64</span><span class=nx>M</span>     <span class=mi>0</span>   <span class=mi>64</span><span class=nx>M</span>   <span class=mi>0</span><span class=o>%</span> <span class=err>/dev/shm</span>
+<span class=mf>10.254.100.101</span><span class=o>:</span><span class=err>/mnt/data   50G  9.9G   37G  22% /usr/share/nginx/html #挂载成功</span>
+<span class=nx>tmpfs</span>                     <span class=mi>920</span><span class=nx>M</span>   <span class=mi>12</span><span class=nx>K</span>  <span class=mi>920</span><span class=nx>M</span>   <span class=mi>1</span><span class=o>%</span> <span class=err>/run/secrets/kubernetes.io/serviceaccount</span>
+<span class=nx>tmpfs</span>                     <span class=mi>920</span><span class=nx>M</span>     <span class=mi>0</span>  <span class=mi>920</span><span class=nx>M</span>   <span class=mi>0</span><span class=o>%</span> <span class=err>/proc/acpi</span>
+<span class=nx>tmpfs</span>                     <span class=mi>920</span><span class=nx>M</span>     <span class=mi>0</span>  <span class=mi>920</span><span class=nx>M</span>   <span class=mi>0</span><span class=o>%</span> <span class=err>/proc/scsi</span>
+<span class=nx>tmpfs</span>                     <span class=mi>920</span><span class=nx>M</span>     <span class=mi>0</span>  <span class=mi>920</span><span class=nx>M</span>   <span class=mi>0</span><span class=o>%</span> <span class=err>/sys/firmware</span>
+
+<span class=nx>写入站点数据内容</span>
+<span class=nx>root</span><span class=err>@</span><span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span><span class=o>-</span><span class=mi>7467</span><span class=nx>b9fbfc</span><span class=o>-</span><span class=nx>xwdpr</span><span class=o>:~</span><span class=err>#</span> <span class=nx>echo</span> <span class=s2>&#34;pvc index by happylau&#34;</span> <span class=o>&gt;</span><span class=err>/usr/share/nginx/html/index.html </span>
+<span class=nx>root</span><span class=err>@</span><span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span><span class=o>-</span><span class=mi>7467</span><span class=nx>b9fbfc</span><span class=o>-</span><span class=nx>xwdpr</span><span class=o>:~</span><span class=err>#</span> <span class=nx>ls</span> <span class=o>-</span><span class=nx>l</span> <span class=o>/</span><span class=nx>usr</span><span class=o>/</span><span class=nx>share</span><span class=o>/</span><span class=nx>nginx</span><span class=o>/</span><span class=nx>html</span><span class=o>/</span>
+<span class=nx>total</span> <span class=mi>4</span>
+<span class=o>-</span><span class=nx>rw</span><span class=o>-</span><span class=nx>r</span><span class=o>--</span><span class=nx>r</span><span class=o>--</span> <span class=mi>1</span> <span class=nx>nobody</span> <span class=nx>nogroup</span> <span class=mi>22</span> <span class=nx>Oct</span> <span class=mi>12</span> <span class=mi>02</span><span class=o>:</span><span class=mi>00</span> <span class=nx>index</span><span class=p>.</span><span class=nx>html</span>
+</code></pre></td></tr></table></div></div><p>\4. 测试访问，直接访问Pod的IP，一般通过service来调用，后续再介绍service</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-js data-lang=js><span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>kubectl</span> <span class=nx>get</span> <span class=nx>pods</span> <span class=o>-</span><span class=nx>l</span> <span class=nx>app</span><span class=o>=</span><span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span> <span class=o>-</span><span class=nx>o</span> <span class=nx>wide</span> 
+<span class=nx>NAME</span>                                  <span class=nx>READY</span>   <span class=nx>STATUS</span>    <span class=nx>RESTARTS</span>   <span class=nx>AGE</span>   <span class=nx>IP</span>            <span class=nx>NODE</span>     <span class=nx>NOMINATED</span> <span class=nx>NODE</span>   <span class=nx>READINESS</span> <span class=nx>GATES</span>
+<span class=nx>pvc</span><span class=o>-</span><span class=nx>nfs</span><span class=o>-</span><span class=nx>deployment</span><span class=o>-</span><span class=mi>7467</span><span class=nx>b9fbfc</span><span class=o>-</span><span class=nx>xwdpr</span>   <span class=mi>1</span><span class=o>/</span><span class=mi>1</span>     <span class=nx>Running</span>   <span class=mi>0</span>          <span class=mi>14</span><span class=nx>m</span>   <span class=mf>10.244.1.29</span>   <span class=nx>node</span><span class=o>-</span><span class=mi>2</span>   <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>           <span class=o>&lt;</span><span class=nx>none</span><span class=o>&gt;</span>
+<span class=p>[</span><span class=nx>root</span><span class=err>@</span><span class=nx>node</span><span class=o>-</span><span class=mi>1</span> <span class=o>~</span><span class=p>]</span><span class=err>#</span> <span class=nx>curl</span> <span class=nx>http</span><span class=o>:</span><span class=c1>//10.244.1.29
+</span><span class=c1></span><span class=nx>pvc</span> <span class=nx>index</span> <span class=nx>by</span> <span class=nx>happylau</span>
+</code></pre></td></tr></table></div></div><h1 id=写在最后>写在最后</h1><p>本文通过介绍了持久化存储PV和持久化存储声明PVC的使用场景和相关概念，并通过实例演示PV和PVC的使用，由于PV需要管理员预先定义，对于大规模环境下使用不便利，因此有了动态PV，即通过StorageClass实现，下章节我们将介绍StorageClass的使用。</p><h1 id=参考文献>参考文献</h1><p>PV和PVC介绍：https://kubernetes.io/docs/concepts/storage/persistent-volumes/</p><p>有状态化应用：https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/</p><blockquote><p>『 转载 』该文章来源于网络，侵删。</p></blockquote></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2019-08-04</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://agou-ops.cn/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/ data-title="10 深入学习持久化存储PV和PVC" data-hashtags=kubernetes><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://agou-ops.cn/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/ data-hashtag=kubernetes><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 Hacker News" data-sharer=hackernews data-url=https://agou-ops.cn/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/ data-title="10 深入学习持久化存储PV和PVC"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="分享到 Line" data-sharer=line data-url=https://agou-ops.cn/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/ data-title="10 深入学习持久化存储PV和PVC"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/line.svg></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://agou-ops.cn/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/ data-title="10 深入学习持久化存储PV和PVC" data-ralateuid=AGou-ops><i class="fab fa-weibo fa-fw"></i></a><a href=javascript:void(0); title="分享到 百度" data-sharer=baidu data-url=https://agou-ops.cn/myBlog-2/post/10-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8pv%E5%92%8Cpvc/ data-title="10 深入学习持久化存储PV和PVC"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/baidu.svg></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/myBlog-2/tags/kubernetes/>kubernetes</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>返回</a></span>&nbsp;|&nbsp;<span><a href=/myBlog-2/>主页</a></span></section></div><div class=post-nav><a href=/myBlog-2/post/11-%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0deployment%E6%8E%A7%E5%88%B6%E5%99%A8/ class=prev rel=prev title="11 深入学习Deployment控制器"><i class="fas fa-angle-left fa-fw"></i>11 深入学习Deployment控制器</a>
+<a href=/myBlog-2/post/09-%E5%88%9D%E8%AF%86pod%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86/ class=next rel=next title="09 初识Pod存储管理">09 初识Pod存储管理<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=utterances></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://utteranc.es/>Utterances</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><a href=https://agou-ops.github.io target=_blank rel="noopener noreferrer" style=color:red>【AGou-ops.top】</a> 备份站点</div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.75.1">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2018 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/myBlog-2/ target=_blank>AGou-ops</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span><span class=icp-splitter>&nbsp;|&nbsp;</span><br class=icp-br><span class=icp>鲁ICP备19050296号-2</span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"AGou-ops/comments"}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"5M8VQRD7W9","algoliaIndex":"blog-2","algoliaSearchKey":"2fcdbd0ce638664e7a28cc64939603b9","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"twemoji":true};</script><script type=text/javascript src=/myBlog-2/js/theme.min.js></script></body></html>
