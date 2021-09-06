@@ -665,7 +665,7 @@ theme = "LoveIt"
     enable = true
     # Custom content (HTML format is supported)
     # 自定义内容 (支持 HTML 格式)
-    custom = '<a href="https://agou-ops.github.io" target="_blank" rel="noopener noreferrer" style="color:red;">【AGou-ops.top】</a> 备份站点'
+    custom = '<a href="https://agou-ops.github.io/-/" target="_blank" rel="noopener noreferrer" style="color:red;">【AGou-ops.cn】</a> 备份站点'
     # whether to show Hugo and theme info
     # 是否显示 Hugo 和主题信息
     hugo = true
