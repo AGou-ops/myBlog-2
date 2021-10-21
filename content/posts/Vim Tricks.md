@@ -1,7 +1,7 @@
 ---
 title: "Vim Hotkeys and Cheat Sheet"
 date: 2020-12-06T11:53:04+08:00
-lastmod: 2020-12-06T11:53:04+08:00
+lastmod: 2021-08-25T15:17:04+08:00
 draft: false
 description: ""
 tags: ["vim", "tricks"]
@@ -15,7 +15,7 @@ author: "AGou-ops"
 # comment: true
 toc: true
 autoCollapseToc: true
-contentCopyright: '<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank">CC BY-NC-ND 4.0</a>'
+contentCopyright: '<a href="http://www.wtfpl.net/about/" rel="noopener" target="_blank">WTFPL v2</a>'
 # contentCopyright: '<a href="YOUR_URL" rel="noopener" target="_blank">See origin</a>'
 reward: true
 mathjax: false
@@ -26,6 +26,10 @@ mathjax: false
 ---
 
 > 该文章用于记录个人在使用`vim`期间常用的技巧和快捷键。
+>
+> - 2021-08-20 15:27:56：初始化；
+> - 2021年08月20日15:27:18 ： 更新vim分屏快捷键以及`NERDTree`快捷键；
+> - 2021年09月18日09:53:28： 更新插件快捷键；
 
 ## 通用技巧
 
@@ -132,6 +136,9 @@ U/u	将所选区域字母转换为大写或者小写
 r<字符>	将所选区域的内容全部替换为<字符>内容
 <S-i>	列插入
 $	列选择, 选择结尾, 使用场景: 为选中区域的行尾添加指定符号
+
+viw	快速选中当前单词
+ve  快速选中当前字符到单词结尾
 ```
 
 - `Ex` 命令
@@ -144,6 +151,7 @@ $	列选择, 选择结尾, 使用场景: 为选中区域的行尾添加指定符
 :t.		复制当前行, 相当于`yyp`
 :'<,'>t0	把高亮选中区域复制到文件开头
 :m		移动当前行, 使用方法和`:copy`相关用法一致
+:read ! <shelll command>  从shell命令中读取输出内容到当前光标处
 
 :'<,'>normal A;		在可视化模式下批量使用普通模式命令, 即在每行末尾添加一个分号
 :'<,'>normal i//	在可视化行选择模式下, 批量为每行开头添加注释符
@@ -175,12 +183,19 @@ q/		打开查找历史命令窗口
 :sp[lit] {file}		同`<C-w>s`, 水平切分当前窗口，并在新窗口中载入{file}
 :vsp[lit] {file}	同`<C-w>v`, 垂直切分当前窗口，并在新窗口中载入{file}
 <C-w><`上下左右`方向键或者`HJKL`键或者`w`键>		切换当前窗口, `w`为循环切换
+<C-w>H、J、K、L		左上右下移动当前窗口位置
 :clo[se]		同`<C-w>c`, 关闭活动窗口
 :on[ly]			同`<C-w>o`, 只保留活动窗口, 关闭其他所有窗口
 # 窗口大小调整
 <C-w>=		使所有窗口等宽、等高
 <C-w>_		最大化活动窗口的高度
 <C-w>｜		最大化活动窗口的宽度
+<C-w>>		窗口右移
+<C-w>>		窗口左移
+<C-w>H		将当前窗口移到最左边
+<C-w>J		将当前窗口移到最上面
+<C-w>K		将当前窗口移到最下面
+<C-w>L		将当前窗口移到最右边
 [N]<C-w>_		把活动窗口的高度设为[N]行
 [N]<C-w>｜		把活动窗口的宽度设为[N]列
 <C-w>T		把当前窗口移动到一个新的标签
@@ -338,8 +353,32 @@ doe,john,john@example.com
 :%s//\3,\2,\1
 ```
 
+## 其他hotkeys
+
+
+插件中的hotkey：
+```bash
+ctrl + p		打开文件搜索
+gd 			跳转定义
+ctrl + o 	从定义返回
+m  			打开nerdtree菜单
+
+# simpleflod 快捷键
+zc/zC  		折叠单个/所有
+zo/zO		展开单个/所有
+```
+
+
+## 附录：NERDTree 快捷键
+
+{{< gist "https://gist.github.com/geekontheway/2667442.js" >}}
+
+<script src="https://gist.github.com/geekontheway/2667442.js"></script>
+
 ## 参考链接
 
+- 我的vim dotfile: https://github.com/AGou-ops/dotfiles
 - Vim实用技巧(第2版): https://agou-images.oss-cn-qingdao.aliyuncs.com/pdfs/Vim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7%EF%BC%88%E7%AC%AC2%E7%89%88%EF%BC%89.pdf
 - Vim cheatsheet: https://devhints.io/vim
 - Vim Cheat Sheet: https://vim.rtorr.com/
+

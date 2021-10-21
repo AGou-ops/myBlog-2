@@ -3,9 +3,9 @@ title: "Shortcodes Preview"
 date: 2019-03-04T16:01:23+08:00
 lastmod: 2019-03-05T16:01:23+08:00
 draft: false
-tags: ["preview", "shortcodes"]
-categories: ["docs", "shortcodes", "index"]
-author: "AGou"
+tags: []
+categories: ['hugo','shortcode']
+author: "AGou-ops"
 # menu:
 #   main:
 #     parent: "docs"
@@ -30,26 +30,40 @@ More details: https://gohugo.io/content-management/shortcodes/
 ## blockquotes
 
 Normal quote:
+{{< blockquote >}}
   This is a simple quote.
+{{< /blockquote >}}
 
 Quote with author:
+{{< blockquote author="Author2" >}}
   This is a quote with only an Author named Author2.
+{{< /blockquote >}}
 
 Quote with author and source:
+{{< blockquote author="Author3" source="Source" >}}
   This is a quote from Author3 and source "source."
+{{< /blockquote >}}
 
 Quote with author and link:
+{{< blockquote author="Author4" link="https://www.google.com" >}}
   This is a quote from Author4 and links to https://www.google.com.
+{{< /blockquote >}}
 
 Quote with author, link and title:
+{{< blockquote author="Author5" link="https://www.google.com" title="Google" >}}
   This is a quote from Author5 and links to https://www.google.com with title "Google."
+{{< /blockquote >}}
 
 Quote with author and a link longer than 32 characters, string is first cut at 32 characters then everything after the last forward slash is removed
+{{< blockquote author="Author6" link="https://twitter.com/CryptoGangsta/status/716427930126196737" >}}
   This is a quote from Author5 and links to https://twitter.com/CryptoGangsta/status/716427930126196737 which is longer than 32 characters.
   <br>And this is a new line in the quote with the HTML br tag.
+{{< /blockquote >}}
 
 Test from the Octopress blockquote page at: http://octopress.org/docs/plugins/blockquote/
+{{< blockquote author="@allanbranch" link="https://twitter.com/allanbranch/status/90766146063712256" >}}
   Over the past 24 hours I've been reflecting on my life & I've realized only one thing. I need a medieval battle axe.
+{{< /blockquote >}}
 
 
 ## music
@@ -71,13 +85,17 @@ Display:
 ## expand
 The Expand shortcode displays an expandable/collapsible section of text on your page. Here is an example
 
+{{< expand "Is this learn theme rocks ?" >}}
 Yes !.
+{{< /expand >}}
 
 ### Usage
 this shortcode takes exactly one optional parameter to define the text that appears next to the expand/collapse icon. (default is “Click to expand”)
 
 ```
+{{</* expand "Is this learn theme rocks ?" */>}}
 Yes !.
+{{</* /expand */>}}
 ```
 
 ## youtube
@@ -91,3 +109,4 @@ Yes !.
 
 ## youku
 
+{{< youku XMzQ0ODUxMjM2NA >}}

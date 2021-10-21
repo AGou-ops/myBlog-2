@@ -5,17 +5,17 @@ lastmod: 2020-06-12T19:40:55+08:00
 draft: false
 description: ""
 tags: ['Linux','监控']
-categories: ['Linux']
+categories: ['Linux','Tools']
 keywords: []
 
 author: "AGou-ops"
 
 # weight:
 # menu: "main"
-# comment: true
+comment: true
 toc: true
 autoCollapseToc: true
-contentCopyright: '<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank">CC BY-NC-ND 4.0</a>'
+contentCopyright: '<a href="http://www.wtfpl.net/about/" rel="noopener" target="_blank">WTFPL v2</a>'
 # contentCopyright: '<a href="YOUR_URL" rel="noopener" target="_blank">See origin</a>'
 reward: true
 mathjax: false
@@ -236,6 +236,7 @@ wtf:
 
 ### 官方支持模块
 
+{{< expand "单击以展开" >}}
 
 Azure DevOps
 BambooHR
@@ -288,6 +289,7 @@ VictorOps OnCall
 Weather Services
 Zendesk
 
+{{< /expand >}}
 
 ## bashtop
 

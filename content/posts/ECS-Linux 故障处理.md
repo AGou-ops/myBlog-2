@@ -12,10 +12,10 @@ author: "AGou-ops"
 
 # weight:
 # menu: "main"
-# comment: true
+comment: true
 toc: true
 autoCollapseToc: true
-contentCopyright: '<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank">CC BY-NC-ND 4.0</a>'
+contentCopyright: '<a href="http://www.wtfpl.net/about/" rel="noopener" target="_blank">WTFPL v2</a>'
 # contentCopyright: '<a href="YOUR_URL" rel="noopener" target="_blank">See origin</a>'
 reward: true
 mathjax: false
@@ -27,3 +27,5 @@ mathjax: false
 
 
 **篇幅有限，转至 [https://agou-ops.top/linux_sys_fix](https://agou-ops.top/linux_sys_fix) 进行查看。**
+
+<!--more-->

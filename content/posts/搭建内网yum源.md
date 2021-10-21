@@ -15,7 +15,7 @@ author: "AGou-ops"
 comment: true
 toc: true
 autoCollapseToc: true
-contentCopyright: '<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank">CC BY-NC-ND 4.0</a>'
+contentCopyright: '<a href="http://www.wtfpl.net/about/" rel="noopener" target="_blank">WTFPL v2</a>'
 # contentCopyright: '<a href="YOUR_URL" rel="noopener" target="_blank">See origin</a>'
 reward: true
 mathjax: false
@@ -27,7 +27,7 @@ mathjax: false
 
 > 搭建内网yum源，摆脱软件包困扰。 
 
-## 选择合适稳定的公网yum仓库 
+## 选择合适稳定的公网yum仓库
 建议选择对运营商网络友好的yum仓库
 
 国内可供选择的有:
