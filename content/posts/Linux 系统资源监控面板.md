@@ -236,7 +236,7 @@ wtf:
 
 ### 官方支持模块
 
-{{< expand "单击以展开" >}}
+
 
 Azure DevOps
 BambooHR
@@ -289,7 +289,6 @@ VictorOps OnCall
 Weather Services
 Zendesk
 
-{{< /expand >}}
 
 ## bashtop
 
