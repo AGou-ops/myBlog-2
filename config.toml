@@ -56,11 +56,11 @@ theme = "LoveIt"
         title = ""
         weight = 3
       [[languages.en.menu.main]]
-        identifier = "Anime"
+        identifier = "anime"
         pre = ""
         post = ""
         name = "Anime"
-        url = "../myBlog-2/Anime/"
+        url = "../myBlog-2/anime/"
         title = ""
         weight = 4
       [[languages.en.menu.main]]
@@ -257,11 +257,11 @@ theme = "LoveIt"
         title = ""
         weight = 3
       [[languages.zh-cn.menu.main]]
-        identifier = "Anime"
+        identifier = "anime"
         pre = ""
         post = ""
         name = "Anime"
-        url = "../myBlog-2/Anime/"
+        url = "../myBlog-2/anime/"
         title = ""
         weight = 4
       [[languages.zh-cn.menu.main]]
