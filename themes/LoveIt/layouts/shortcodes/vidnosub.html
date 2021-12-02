@@ -23,7 +23,7 @@
             const dp = new DPlayer({
                 container: document.getElementById('dplayer'),
                 autoplay: false,
-                theme: '#c05b4d',
+                theme: '#b7daff',
                 loop: false,
                 lang: 'zh-cn',
                 screenshot: false,
@@ -32,13 +32,6 @@
                 volume: 0.7,
                 mutex: true,
                 logo: 'https://agou-images.oss-cn-qingdao.aliyuncs.com/BaseIMG/youtube.png',
-                subtitle: {
-                    url: '{{ .Get "subtitle" }}',
-                    type: 'webvtt',
-                    fontSize: '20px',
-                    bottom: '3%',
-                    color: '#0000',
-                },
                 video: {
                     type: 'auto',
                     url: '{{ .Get "link" }}',
