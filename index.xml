@@ -1,4 +1,4 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>AGou's Blog-2</title><link>https://agou-ops.cn/myBlog-2/</link><description>关于博主</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 09 Dec 2021 08:49:21 +0800</lastBuildDate><atom:link href="https://agou-ops.cn/myBlog-2/index.xml" rel="self" type="application/rss+xml"/><item><title>钉钉群聊机器人sample</title><link>https://agou-ops.cn/myBlog-2/post/%E9%92%89%E9%92%89%E7%BE%A4%E8%81%8A%E6%9C%BA%E5%99%A8%E4%BA%BAsample/</link><pubDate>Thu, 09 Dec 2021 08:49:21 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/%E9%92%89%E9%92%89%E7%BE%A4%E8%81%8A%E6%9C%BA%E5%99%A8%E4%BA%BAsample/</guid><description><![CDATA[<p>最近需要做一个钉钉群聊机器人，需求是：<strong>艾特该机器人并发送相应关键字，机器人会进行相应的自动回复。</strong></p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>AGou's Blog-2</title><link>https://agou-ops.cn/myBlog-2/</link><description>关于博主</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 13 Jan 2022 17:20:48 +0800</lastBuildDate><atom:link href="https://agou-ops.cn/myBlog-2/index.xml" rel="self" type="application/rss+xml"/><item><title>Neovim自用Golang开发</title><link>https://agou-ops.cn/myBlog-2/post/neovim%E8%87%AA%E7%94%A8golang%E5%BC%80%E5%8F%91/</link><pubDate>Thu, 13 Jan 2022 17:20:48 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/neovim%E8%87%AA%E7%94%A8golang%E5%BC%80%E5%8F%91/</guid><description></description></item><item><title>钉钉群聊机器人sample</title><link>https://agou-ops.cn/myBlog-2/post/%E9%92%89%E9%92%89%E7%BE%A4%E8%81%8A%E6%9C%BA%E5%99%A8%E4%BA%BAsample/</link><pubDate>Thu, 09 Dec 2021 08:49:21 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/%E9%92%89%E9%92%89%E7%BE%A4%E8%81%8A%E6%9C%BA%E5%99%A8%E4%BA%BAsample/</guid><description><![CDATA[<p>最近需要做一个钉钉群聊机器人，需求是：<strong>艾特该机器人并发送相应关键字，机器人会进行相应的自动回复。</strong></p>
 <p>通过<code>钉钉开放平台·钉钉机器人</code>的<a href="https://open.dingtalk.com/document/robots/enterprise-created-chatbot?spm=ding_open_doc.document.0.0.3d6d24cb7j00JN#topic-2097982" target="_blank" rel="noopener noreffer">企业自建机器人</a>官方文档以及网络上其他语言（Java，Python等）的钉钉机器人的实现，自己瞎编写出来了一个基础版本的小机器人。</p>
 <p>奇怪的是用Golang来写的人很少，可能是官方的示例中没有Golang吧，虽然会一些Python，但是现在转学Golang了，故借此机会来巩固一下最近所学的一些东西:smile: 。</p>
 <p><code>DingTalk_robot</code>群聊机器人处理流程图：</p>
@@ -36,15 +36,4 @@ Vi IMproved - enhanced vi editor - with GTK3 GUI
 <ul>
 <li>显示屏是否有问题，或者是不是HDMI线接触不良？</li>
 <li>主板上显卡是不是接触不良？</li>
-</ul>]]></description></item><item><title>大学毕业。</title><link>https://agou-ops.cn/myBlog-2/post/%E5%A4%A7%E5%AD%A6%E6%AF%95%E4%B8%9A/</link><pubDate>Mon, 28 Jun 2021 19:20:04 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/%E5%A4%A7%E5%AD%A6%E6%AF%95%E4%B8%9A/</guid><description><![CDATA[<blockquote>
-  <p><h3 id="啊多想再继续当一名学生但是已经不可以了">啊，多想再继续当一名学生，但是已经不可以了。</h3>
-</p>
-  <footer>
-    <strong>此次离别，不知何时再见。</strong>
-    
-      
-        
-      
-    
-  </footer>
-</blockquote>]]></description></item></channel></rss>
+</ul>]]></description></item></channel></rss>
