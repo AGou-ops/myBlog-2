@@ -1,4 +1,4 @@
-# 内网穿透工具
+# 最全内网穿透工具
 
 
 <!-- ![](https://tu.ltyuanfang.cn/api/fengjing.php) -->
@@ -6,6 +6,78 @@
 整理三款流行的内网穿透工具，[frp](https://github.com/fatedier/frp)【开源】，[nps](https://github.com/ehang-io/nps)【开源】，[ngrok](https://ngrok.com/)【基础版免费】，前两款属于开源产品，需要自行搭建，`ngrok`属于付费产品，但是基础版，白嫖的足够用了.:smile:
 
 <!--more-->
+
+## bore（新起之秀）
+
+github日趋势榜第一，github仓库地址[https://github.com/ekzhang/bore](https://github.com/ekzhang/bore)
+
+> A modern, simple TCP tunnel in Rust that exposes local ports to a remote server, bypassing standard NAT connection firewalls. **That's all it does: no more, and no less.**
+
+用完之后，一个词来形容，**so easy~**
+
+
+
+快速安装：
+
+```bash
+# 如果没有cargo，需要提前安装
+# debian系
+apt install cargo -y
+# MacOS
+brew install cargo
+
+# 安装bore，依赖于rust
+cargo install bore-cli
+
+# -- 此外，cargo还有docker镜像包，运行以下命令可以直接使用
+docker run -it --init --rm --network host ekzhang/bore <ARGS>
+```
+
+>:warning: **注意**：如遇到cargo install过程中出现编译错误（原因是apt仓库中的rust版本太低，bore的最低要求是[Rust 1.58.0](https://blog.rust-lang.org/2022/01/13/Rust-1.58.0.html#captured-identifiers-in-format-strings)）：
+>
+>```
+>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+>```
+
+简单使用：
+
+```bash
+# 服务器端
+bore server
+
+# 客户端（本地主机）
+bore local 8000 --to <YOUR_REMOTE_SERVER_ADDR_OR_IP>
+```
+
+添加认证：
+
+```bash
+# on the server
+bore server --secret my_secret_string
+
+# on the client
+bore local <LOCAL_PORT> --to <TO> --secret my_secret_string
+```
+
+效果如下：
+
+![image-20220413100822960](https://agou-images.oss-cn-qingdao.aliyuncs.com/others/image-20220413100822960.png)
+
+bore服务器端会随机起一个端口映射给客户端。
+
+> :warning: **注意**：如果映射完之后发现无法访问，那应该是被你的防火墙拦截了，使用以下命令关闭防火墙：
+>
+> ```bash
+> # 关闭防火墙
+> systemctl stop firewalld		# redhat系，禁止开机自启，systemctl disable掉就可以了，下面debian系也是.
+> systemctl stop ufw		# debian系
+> # 查看iptables规则
+> iptables -vnL
+> # 清空iptables规则
+> iptables -F
+> ```
+>
+> 如果不想关闭防火墙，那么就需要手动设置规则，这里不是本篇博文的重点，在此不再赘述.
 
 ## frp
 
