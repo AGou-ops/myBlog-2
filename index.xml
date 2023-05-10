@@ -1,6 +1,48 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>AGou's Blog-2</title><link>https://agou-ops.cn/myBlog-2/</link><description>关于博主</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 05 Aug 2022 17:02:21 +0800</lastBuildDate><atom:link href="https://agou-ops.cn/myBlog-2/index.xml" rel="self" type="application/rss+xml"/><item><title>解决VPS频繁Google人机验证（IP被ban）</title><link>https://agou-ops.cn/myBlog-2/post/%E8%A7%A3%E5%86%B3vps%E9%A2%91%E7%B9%81google%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81ip%E8%A2%AB%E5%A2%99/</link><pubDate>Thu, 02 Dec 2021 08:50:05 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/%E8%A7%A3%E5%86%B3vps%E9%A2%91%E7%B9%81google%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81ip%E8%A2%AB%E5%A2%99/</guid><description><![CDATA[<p>前两天入手了<code>RackNerd</code>的一台VPS，选的区域是<code>华盛顿西雅图</code>，搭建好magic上网之后，访问Google老是跳人机验证，非常频繁，用起来特别烦人（问tg群里大哥说好像除了<code>洛杉矶</code>区域外基本都跳Google人机验证），都有种想换搜索引擎的冲动。但是本着要解决问题和爱折腾的态度，还是尝试解决一下吧。</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>AGou's Blog-2</title><link>https://agou-ops.cn/myBlog-2/</link><description>关于博主</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 10 May 2023 17:21:51 +0800</lastBuildDate><atom:link href="https://agou-ops.cn/myBlog-2/index.xml" rel="self" type="application/rss+xml"/><item><title>解决VPS频繁Google人机验证（IP被ban）</title><link>https://agou-ops.cn/myBlog-2/post/%E8%A7%A3%E5%86%B3vps%E9%A2%91%E7%B9%81google%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81ip%E8%A2%AB%E5%A2%99/</link><pubDate>Thu, 02 Dec 2021 08:50:05 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/%E8%A7%A3%E5%86%B3vps%E9%A2%91%E7%B9%81google%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81ip%E8%A2%AB%E5%A2%99/</guid><description><![CDATA[<p>前两天入手了<code>RackNerd</code>的一台VPS，选的区域是<code>华盛顿西雅图</code>，搭建好magic上网之后，访问Google老是跳人机验证，非常频繁，用起来特别烦人（问tg群里大哥说好像除了<code>洛杉矶</code>区域外基本都跳Google人机验证），都有种想换搜索引擎的冲动。但是本着要解决问题和爱折腾的态度，还是尝试解决一下吧。</p>
 <p></p>
-<p>:warning: 以下部分内容来源于网络，仅做个人备份学习使用。</p>]]></description></item><item><title>MacOS偏门解决vim/Neovim光标跳转（j/k键）卡顿的问题。【使用karabiner】</title><link>https://agou-ops.cn/myBlog-2/post/macos-%E7%BB%88%E7%AB%AF%E4%B8%8B%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8%E9%97%AE%E9%A2%98/</link><pubDate>Fri, 05 Aug 2022 17:02:21 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/macos-%E7%BB%88%E7%AB%AF%E4%B8%8B%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8%E9%97%AE%E9%A2%98/</guid><description><![CDATA[<p>问题详情参考：<a href="https://blog.deskangel.com/2021/04/03/vim-j-k-speed-issue/" target="_blank" rel="noopener noreffer">https://blog.deskangel.com/2021/04/03/vim-j-k-speed-issue/</a></p>
+<p>:warning: 以下部分内容来源于网络，仅做个人备份学习使用。</p>]]></description></item><item><title>PVE初始化相关</title><link>https://agou-ops.cn/myBlog-2/post/pve%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9B%B8%E5%85%B3/</link><pubDate>Wed, 10 May 2023 17:21:51 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/pve%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9B%B8%E5%85%B3/</guid><description><![CDATA[<h2 id="去除登录订阅弹窗">去除登录订阅弹窗</h2>
+<p>备份该文件:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cp /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js<span class="o">{</span>,.bak<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>找到以下代码，大概在<code>546</code>行:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="mi">546</span>                     <span class="k">if</span> <span class="p">(</span><span class="nx">res</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">res</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="o">!</span><span class="nx">res</span> <span class="o">||</span> <span class="nx">res</span>
+<span class="mi">547</span>                         <span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!==</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span> <span class="p">{</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>将以上的if条件改为false即可，如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>修改完保存文件，重启服务：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl restart pveproxy
+</code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>PVE制作镜像模板</title><link>https://agou-ops.cn/myBlog-2/post/pve%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E6%A8%A1%E6%9D%BF/</link><pubDate>Wed, 10 May 2023 17:21:40 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/pve%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F%E6%A8%A1%E6%9D%BF/</guid><description><![CDATA[<h2 id="创建虚拟机">创建虚拟机</h2>
+<p>创建虚拟机，ID和名称按照自己的喜好随便取：</p>
+<p></p>
+<p>需要注意的是，在选择<code>操作系统</code>这一步中，不要选择任何介质，如下图所示：</p>]]></description></item><item><title>MacOS偏门解决vim/Neovim光标跳转（j/k键）卡顿的问题。【使用karabiner】</title><link>https://agou-ops.cn/myBlog-2/post/macos-%E7%BB%88%E7%AB%AF%E4%B8%8B%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8%E9%97%AE%E9%A2%98/</link><pubDate>Fri, 05 Aug 2022 17:02:21 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/macos-%E7%BB%88%E7%AB%AF%E4%B8%8B%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8%E9%97%AE%E9%A2%98/</guid><description><![CDATA[<p>问题详情参考：<a href="https://blog.deskangel.com/2021/04/03/vim-j-k-speed-issue/" target="_blank" rel="noopener noreffer">https://blog.deskangel.com/2021/04/03/vim-j-k-speed-issue/</a></p>
 <p>在iterm2中强制让英文输入法切换为内置的<code>ABC输入法</code>而不使用搜狗或者其他输入法的英文状态.</p>
 <p>在使用iterm2的时候，将<code>左shift</code>键重新映射为<code>command+space</code>键（在系统快捷键中设置切换输入法的快捷键，这里你可以自定义）。
 使用以下命令将上面这个键盘映射json文件导入到karabiner里面（浏览器打开就可以，会自动拉起karabiner，路径自定义。）</p>
@@ -30,9 +72,4 @@ karabiner://karabiner/assets/complex_modifications/import?url<span class="o">=</
 <p>通过<code>钉钉开放平台·钉钉机器人</code>的<a href="https://open.dingtalk.com/document/robots/enterprise-created-chatbot?spm=ding_open_doc.document.0.0.3d6d24cb7j00JN#topic-2097982" target="_blank" rel="noopener noreffer">企业自建机器人</a>官方文档以及网络上其他语言（Java，Python等）的钉钉机器人的实现，自己瞎编写出来了一个基础版本的小机器人。</p>
 <p>奇怪的是用Golang来写的人很少，可能是官方的示例中没有Golang吧，虽然会一些Python，但是现在转学Golang了，故借此机会来巩固一下最近所学的一些东西:smile: 。</p>
 <p><code>DingTalk_robot</code>群聊机器人处理流程图：</p>
-<p></p>]]></description></item><item><title>Shell Tricks</title><link>https://agou-ops.cn/myBlog-2/post/shell-tricks/</link><pubDate>Mon, 08 Nov 2021 11:25:31 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/shell-tricks/</guid><description><![CDATA[<p></p>
-<p><strong>:triangular_flag_on_post:该文章将持续更新。</strong></p>
-<p>分享和记录个人日常和工作中，学习和实际用到的shell片段以及一些小技巧。</p>]]></description></item><item><title>K8s网络学习</title><link>https://agou-ops.cn/myBlog-2/post/k8s%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0-copy/</link><pubDate>Tue, 02 Nov 2021 14:30:23 +0800</pubDate><author>作者</author><guid>https://agou-ops.cn/myBlog-2/post/k8s%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0-copy/</guid><description><![CDATA[<p>从简单<code>p2p</code>网络到k8s复杂型网络。</p>
-<h2 id="简单p2p网络模型">简单p2p网络模型</h2>
-<p></p>
-<p>:information_source:简单说明：创建两个网络命名空间<code>client</code>和<code>server</code>，然后创建一对虚拟网卡将两端的命名空间相连起来，就好像直接相连的网线一样，中间没有阻拦，创建完的虚拟网卡对存在于默认的命名空间中，接着我们将其分别放入<code>client</code>和<code>server</code>命名空间中，最后为两个虚拟网卡对<code>veth-client</code>和<code>veth-server</code>分配IP地址并启用网卡。</p>]]></description></item></channel></rss>
+<p></p>]]></description></item></channel></rss>

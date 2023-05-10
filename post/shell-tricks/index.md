@@ -1,7 +1,7 @@
 # Shell Tricks
 
 
-<img src="https://api.ixiaowai.cn/gqapi/gqapi.php" style="zoom:65%;" />
+<img src="#" style="zoom:65%;" />
 
 **:triangular_flag_on_post:该文章将持续更新。**
 

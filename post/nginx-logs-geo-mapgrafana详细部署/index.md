@@ -1,7 +1,7 @@
 # NGINX LOGS & GEO MAP(Grafana)详细部署
 
 
-![image-20220424105947609](https://agou-images.oss-cn-qingdao.aliyuncs.com/others/image-20220424105947609.png)
+![image-20220424105947609](https://cdn.agou-ops.cn/others/image-20220424105947609.png)
 
 以上是`Grafana Template`的页面截图，🔗 [https://grafana.com/grafana/dashboards/12268](https://grafana.com/grafana/dashboards/12268)
 
@@ -473,15 +473,15 @@ time                city          count country_code country_name         geohas
 
 简单两步骤：
 
-![image-20220424121739974](https://agou-images.oss-cn-qingdao.aliyuncs.com/others/image-20220424121739974.png)
+![image-20220424121739974](https://cdn.agou-ops.cn/others/image-20220424121739974.png)
 
 添加模板：
 
-![image-20220424121822160](https://agou-images.oss-cn-qingdao.aliyuncs.com/others/image-20220424121822160.png)
+![image-20220424121822160](https://cdn.agou-ops.cn/others/image-20220424121822160.png)
 
 ## 最终结果
 
-![image-20220424105850934](https://agou-images.oss-cn-qingdao.aliyuncs.com/others/image-20220424105850934.png)
+![image-20220424105850934](https://cdn.agou-ops.cn/others/image-20220424105850934.png)
 
 Done.
 
