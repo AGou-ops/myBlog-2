@@ -1,0 +1,190 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>使用Tailsclae VPN访问k8s集群服务（via K8s Operator） - AGou's Blog-2</title><meta name=Description content="关于博主"><meta property="og:title" content="使用Tailsclae VPN访问k8s集群服务（via K8s Operator）"><meta property="og:description" content="Tailscale Kubernetes operator
+
+将 Kubernetes 集群中的服务公开到 Tailscale 网络（称为 tailnet）
+通过 API 服务器代理安全连接到Kubernetes 控制平面 (kube-apiserver) ，无论是否进行身份验证
+从 Kubernetes 集群到Egress上的外部服务的出口
+
+
+Kubernetes Operator 目前处于测试阶段。"><meta property="og:type" content="article"><meta property="og:url" content="https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/"><meta property="og:image" content="https://agou-images.oss-cn-qingdao.aliyuncs.com/BaseIMG/tuoer.jpg"><meta property="article:published_time" content="2024-10-18T09:12:26+08:00"><meta property="article:modified_time" content="2024-10-18T09:12:26+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://agou-images.oss-cn-qingdao.aliyuncs.com/BaseIMG/tuoer.jpg"><meta name=twitter:title content="使用Tailsclae VPN访问k8s集群服务（via K8s Operator）"><meta name=twitter:description content="Tailscale Kubernetes operator
+
+将 Kubernetes 集群中的服务公开到 Tailscale 网络（称为 tailnet）
+通过 API 服务器代理安全连接到Kubernetes 控制平面 (kube-apiserver) ，无论是否进行身份验证
+从 Kubernetes 集群到Egress上的外部服务的出口
+
+
+Kubernetes Operator 目前处于测试阶段。"><meta name=application-name content="AGou's Blog-2."><meta name=apple-mobile-web-app-title content="AGou's Blog-2."><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/myBlog-2/favicon.png><link rel=icon type=image/png sizes=32x32 href=/myBlog-2/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/myBlog-2/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/><link rel=prev href=https://agou-ops.cn/myBlog-2/post/k8s-operator%E4%B9%8Bcontroller-tools%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/><link rel=next href=https://agou-ops.cn/myBlog-2/post/%E8%A7%A3%E5%86%B3vps%E9%A2%91%E7%B9%81google%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81ip%E8%A2%AB%E5%A2%99/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/myBlog-2/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"使用Tailsclae VPN访问k8s集群服务（via K8s Operator）","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/agou-ops.cn\/myBlog-2\/post\/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator\/"},"image":["https:\/\/agou-images.oss-cn-qingdao.aliyuncs.com\/BaseIMG\/tuoer.jpg"],"genre":"posts","wordcount":1195,"url":"https:\/\/agou-ops.cn\/myBlog-2\/post\/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator\/","datePublished":"2024-10-18T09:12:26+08:00","dateModified":"2024-10-18T09:12:26+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"AGou-ops","logo":"https:\/\/agou-images.oss-cn-qingdao.aliyuncs.com\/BaseIMG\/tuoer.jpg"},"author":{"@type":"Person","name":"AGou-ops"},"description":""}</script></head><body header-desktop=auto header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/myBlog-2/ title="AGou's Blog-2"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>AGou-ops</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/myBlog-2/posts/>所有文章 </a><a class=menu-item href=/myBlog-2/tags/>标签 </a><a class=menu-item href=/myBlog-2/categories/>分类 </a><a class=menu-item href=/myBlog-2/anime/>Anime </a><a class=menu-item href=/myBlog-2/about/>关于 </a><a class=menu-item href=https://github.com/AGou-ops title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select id=language-select-desktop onchange="location=this.value;"><option value=/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/myBlog-2/ title="AGou's Blog-2"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>AGou-ops</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/myBlog-2/posts/>所有文章</a><a class=menu-item href=/myBlog-2/tags/>标签</a><a class=menu-item href=/myBlog-2/categories/>分类</a><a class=menu-item href=/myBlog-2/anime/>Anime</a><a class=menu-item href=/myBlog-2/about/>关于</a><a class=menu-item href=https://github.com/AGou-ops title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a><a href=javascript:void(0); class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select onchange="location=this.value;"><option value=/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">使用Tailsclae VPN访问k8s集群服务（via K8s Operator）</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/myBlog-2/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>AGou-ops</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2024-10-18>2024-10-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1195 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#预先准备>预先准备</a></li><li><a href=#使用helm安装operator>使用helm安装operator</a></li><li><a href=#使用示例>使用示例</a></li><li><a href=#参考链接>参考链接</a></li></ul></nav></div></div><div class=content id=content><blockquote><p><a href=https://tailscale.com/kb/1236/kubernetes-operator target=_blank rel="noopener noreffer">Tailscale Kubernetes operator</a></p><ul><li>将 Kubernetes 集群中的<a href=https://kubernetes.io/docs/concepts/services-networking/service target=_blank rel="noopener noreffer">服务</a>公开到 Tailscale 网络（称为 tailnet）</li><li>通过 API 服务器代理安全连接到<a href=https://kubernetes.io/docs/concepts/overview/components/#kube-apiserver target=_blank rel="noopener noreffer">Kubernetes 控制平面 (kube-apiserver)</a> ，无论是否进行身份验证</li><li>从 Kubernetes 集群到Egress上的外部服务的出口</li></ul></blockquote><p>Kubernetes Operator 目前<a href=https://tailscale.com/kb/1167/release-stages#beta target=_blank rel="noopener noreffer">处于测试阶段</a>。</p><h2 id=预先准备>预先准备</h2><ol><li>添加tailnet策略，创建对应的标签：</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-json data-lang=json>	<span class=s2>&#34;tagOwners&#34;</span><span class=err>:</span> <span class=p>{</span>
+		<span class=nt>&#34;tag:k8s-operator&#34;</span><span class=p>:</span> <span class=p>[],</span>
+		<span class=nt>&#34;tag:k8s&#34;</span><span class=p>:</span>          <span class=p>[</span><span class=s2>&#34;tag:k8s-operator&#34;</span><span class=p>],</span>
+	<span class=p>}</span><span class=err>,</span>
+</code></pre></td></tr></table></div></div><p>添加步骤如下所示，<a href=https://login.tailscale.com/admin/acls target=_blank rel="noopener noreffer">点击直达</a>：</p><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.02.11%402x.png data-srcset="https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.02.11%402x.png, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.02.11%402x.png 1.5x, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.02.11%402x.png 2x" data-sizes=auto alt=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.02.11%402x.png title="CleanShot 2024-10-18 at 11.02.11@2x"></p><ol start=2><li>添加oauth客户端，<a href=https://login.tailscale.com/admin/settings/oauth target=_blank rel="noopener noreffer">点击直达</a></li></ol><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.17.47%402x.png data-srcset="https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.17.47%402x.png, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.17.47%402x.png 1.5x, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.17.47%402x.png 2x" data-sizes=auto alt=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.17.47%402x.png title="CleanShot 2024-10-18 at 11.17.47@2x"></p><p>勾选<code>devices</code>的读写权限，并添加上一个步骤添加的tag，点击生成oauth client secret，记住<code>Client ID</code>和<code>Client secret</code>，后面要用到.</p><h2 id=使用helm安装operator>使用helm安装operator</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash><span class=c1># 添加tailscale仓库</span>
+helm repo add tailscale https://pkgs.tailscale.com/helmcharts
+<span class=c1># 更新本地helm缓存</span>
+helm repo update
+
+<span class=c1># 安装operator</span>
+helm upgrade <span class=se>\
+</span><span class=se></span>  --install <span class=se>\
+</span><span class=se></span>  tailscale-operator <span class=se>\
+</span><span class=se></span>  tailscale/tailscale-operator <span class=se>\
+</span><span class=se></span>  --namespace<span class=o>=</span>tailscale <span class=se>\
+</span><span class=se></span>  --create-namespace <span class=se>\
+</span><span class=se></span>  --set-string oauth.clientId<span class=o>=</span>&lt;OAauth client ID&gt; <span class=se>\
+</span><span class=se></span>  --set-string oauth.clientSecret<span class=o>=</span>&lt;OAuth client secret&gt; <span class=se>\
+</span><span class=se></span>  --set-string apiServerProxyConfig.mode<span class=o>=</span><span class=s2>&#34;noauth&#34;</span> <span class=se>\
+</span><span class=se></span>  --wait
+</code></pre></td></tr></table></div></div><p>⚠️注意替换上面的<code>&lt;OAauth client ID></code>和<code>&lt;OAuth client secret></code></p><p>等个十几二十秒，查看operator的状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>kubectl get po -n tailscale
+<span class=c1># 示例输出，正常运行就是没问题</span>
+NAME                        READY   STATUS    RESTARTS   AGE
+operator-5db569fdfc-xkqkh   1/1     Running   <span class=m>0</span>          2m36s
+</code></pre></td></tr></table></div></div><p>这时候打开tailscale的页面，可以看到operator已经被成功加进来了，<a href=https://login.tailscale.com/admin/machines target=_blank rel="noopener noreffer">点击直达</a>：</p><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.20.52%402x.png data-srcset="https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.20.52%402x.png, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.20.52%402x.png 1.5x, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.20.52%402x.png 2x" data-sizes=auto alt=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2011.20.52%402x.png title="CleanShot 2024-10-18 at 11.20.52@2x"></p><h2 id=使用示例>使用示例</h2><p>创建一个kuard测试pod：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>kubectl run kuard -l <span class=nv>app</span><span class=o>=</span>kuard --image 163751/kuard:green
+</code></pre></td></tr></table></div></div><p>创建一个svc暴露端口到tailnet上：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>kubectl apply -f - <span class=s>&lt;&lt;EOF
+</span><span class=s>apiVersion: v1
+</span><span class=s>kind: Service
+</span><span class=s>metadata:
+</span><span class=s>  name: kuard-tailscale-svc
+</span><span class=s>  annotations:
+</span><span class=s>    tailscale.com/expose: &#34;true&#34;
+</span><span class=s>  labels:
+</span><span class=s>    app: kuard
+</span><span class=s>spec:
+</span><span class=s>  ports:
+</span><span class=s>    - port: 8080
+</span><span class=s>      protocol: TCP
+</span><span class=s>      name: kuard
+</span><span class=s>  selector:
+</span><span class=s>    app: kuard
+</span><span class=s>  type: ClusterIP
+</span><span class=s>EOF</span>
+
+<span class=c1># 或者通过ingress进行暴露</span>
+kubectl apply -f - <span class=s>&lt;&lt;EOF
+</span><span class=s>apiVersion: networking.k8s.io/v1
+</span><span class=s>kind: Ingress
+</span><span class=s>metadata:
+</span><span class=s>  name: kuard-ingress
+</span><span class=s>spec:
+</span><span class=s>  defaultBackend:
+</span><span class=s>    service:
+</span><span class=s>      name: kuard-tailscale-svc
+</span><span class=s>      port:
+</span><span class=s>        number: 8080
+</span><span class=s>  ingressClassName: tailscale
+</span><span class=s>EOF</span>
+
+<span class=c1># 获取ingress</span>
+kubectl get ingress
+<span class=c1># 示例输出</span>
+NAME            CLASS       HOSTS   ADDRESS                                          PORTS   AGE
+kuard-ingress   tailscale   *       default-kuard-ingress-ingress.tail2add5.ts.net   <span class=m>80</span>      33s
+<span class=c1># 此时直接通过后面的address即可访问服务。</span>
+</code></pre></td></tr></table></div></div><p>关键点是上面的注解<code>tailscale.com/expose: "true"</code>，Tailscale operator会自动创建一个对应的<code>statefulset</code>和<code>service</code>，如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>kubectl get all -n tailscale
+<span class=c1># 示例输出</span>
+
+NAME                                 READY   STATUS    RESTARTS   AGE
+pod/operator-5db569fdfc-xkqkh        1/1     Running   <span class=m>0</span>          130m
+pod/ts-kuard-tailscale-svc-b8f2m-0   1/1     Running   <span class=m>0</span>          2m58s
+
+NAME                                   TYPE        CLUSTER-IP   EXTERNAL-IP   PORT<span class=o>(</span>S<span class=o>)</span>   AGE
+service/ts-kuard-tailscale-svc-b8f2m   ClusterIP   None         &lt;none&gt;        &lt;none&gt;    3m17s
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/operator   1/1     <span class=m>1</span>            <span class=m>1</span>           135m
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/operator-5db569fdfc   <span class=m>1</span>         <span class=m>1</span>         <span class=m>1</span>       135m
+
+NAME                                            READY   AGE
+statefulset.apps/ts-kuard-tailscale-svc-b8f2m   1/1     3m15s
+</code></pre></td></tr></table></div></div><p>接着打开tailscale的页面，可以看到新的服务已经被成功加进来了，<a href=https://login.tailscale.com/admin/machines target=_blank rel="noopener noreffer">点击直达</a>：</p><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.27.46%402x.png data-srcset="https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.27.46%402x.png, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.27.46%402x.png 1.5x, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.27.46%402x.png 2x" data-sizes=auto alt=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.27.46%402x.png title="CleanShot 2024-10-18 at 13.27.46@2x"></p><p>这时，通过其他任意一个客户端连接tailscale VPN即可访问该服务。</p><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.29.36%402x.png data-srcset="https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.29.36%402x.png, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.29.36%402x.png 1.5x, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.29.36%402x.png 2x" data-sizes=auto alt=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.29.36%402x.png title="CleanShot 2024-10-18 at 13.29.36@2x"></p><p>如果想要通过域名访问，可以通过设置MagicDNS来实现，具体设置在tailscale后台，<code>DNS --> 最下面的MagicDNS</code>启用即可，如果想要开启https，那么把下面的<code>HTTPS Certificates</code>也打开即可.</p><p>点开服务详情，可以看到完整的域名，如下：</p><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.40.12%402x.png data-srcset="https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.40.12%402x.png, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.40.12%402x.png 1.5x, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.40.12%402x.png 2x" data-sizes=auto alt=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.40.12%402x.png title="CleanShot 2024-10-18 at 13.40.12@2x"></p><p>此时打开这个分配的域名加8080端口就可以正常访问服务，域名命名规则为<code>命名空间-服务名-DNS Tailnet name</code>，如果你无法解析该域名，可能是DNS没有配置，需要配置DNS为<code>100.100.100.100</code>，具体以页面上的为准.</p><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.44.06%402x.png data-srcset="https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.44.06%402x.png, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.44.06%402x.png 1.5x, https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.44.06%402x.png 2x" data-sizes=auto alt=https://cdn.agou-ops.cn/blog-images/CleanShot%202024-10-18%20at%2013.44.06%402x.png title="CleanShot 2024-10-18 at 13.44.06@2x"></p><h2 id=参考链接>参考链接</h2><ul><li><a href=https://tailscale.com/kb/1236/kubernetes-operator target=_blank rel="noopener noreffer">Kubernetes operator · Tailscale Docs</a></li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2024-10-18</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/ data-title="使用Tailsclae VPN访问k8s集群服务（via K8s Operator）"><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 Hacker News" data-sharer=hackernews data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/ data-title="使用Tailsclae VPN访问k8s集群服务（via K8s Operator）"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="分享到 Line" data-sharer=line data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/ data-title="使用Tailsclae VPN访问k8s集群服务（via K8s Operator）"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/line.svg></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/ data-title="使用Tailsclae VPN访问k8s集群服务（via K8s Operator）" data-ralateuid=AGou-ops><i class="fab fa-weibo fa-fw"></i></a><a href=javascript:void(0); title="分享到 百度" data-sharer=baidu data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8tailsclae-vpn%E8%AE%BF%E9%97%AEk8s%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1via-k8s-operator/ data-title="使用Tailsclae VPN访问k8s集群服务（via K8s Operator）"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/baidu.svg></i></a></span></div></div></div><div class=post-info-more><section class=post-tags></section><section><span><a href=javascript:void(0); onclick=window.history.back();>返回</a></span>&nbsp;|&nbsp;<span><a href=/myBlog-2/>主页</a></span></section></div><div class=post-nav><a href=/myBlog-2/post/k8s-operator%E4%B9%8Bcontroller-tools%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ class=prev rel=prev title="K8s Operator之controller Tools学习笔记"><i class="fas fa-angle-left fa-fw"></i>K8s Operator之controller Tools学习笔记</a>
+<a href=/myBlog-2/post/%E8%A7%A3%E5%86%B3vps%E9%A2%91%E7%B9%81google%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81ip%E8%A2%AB%E5%A2%99/ class=next rel=next title=解决VPS频繁Google人机验证（IP被ban）>解决VPS频繁Google人机验证（IP被ban）<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=utterances></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://utteranc.es/>Utterances</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><a href=https://agou-ops.github.io/-/ target=_blank rel="noopener noreferrer" style=color:red>【AGou-ops.cn】</a> 备份站点</div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.75.1">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2018 - 2024</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/myBlog-2/ target=_blank>AGou-ops</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span><span class=icp-splitter>&nbsp;|&nbsp;</span><br class=icp-br><span class=icp>鲁ICP备19050296号-2</span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"AGou-ops/comments"}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"5M8VQRD7W9","algoliaIndex":"blog-2","algoliaSearchKey":"2fcdbd0ce638664e7a28cc64939603b9","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"twemoji":true};</script><script type=text/javascript src=/myBlog-2/js/theme.min.js></script></body></html>
