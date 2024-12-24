@@ -1,0 +1,382 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>使用capsule管理k8s多租户（tenants） - AGou's Blog-2</title><meta name=Description content="关于博主"><meta property="og:title" content="使用capsule管理k8s多租户（tenants）"><meta property="og:description" content="Capsule implements a multi-tenant and policy-based environment in your Kubernetes cluster. It is designed as a micro-services-based ecosystem with the minimalist approach, leveraging only on upstream Kubernetes.
+官方文档地址：https://capsule.clastix.io/"><meta property="og:type" content="article"><meta property="og:url" content="https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/"><meta property="og:image" content="https://agou-images.oss-cn-qingdao.aliyuncs.com/BaseIMG/tuoer.jpg"><meta property="article:published_time" content="2024-12-24T14:49:39+08:00"><meta property="article:modified_time" content="2024-12-24T14:49:39+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://agou-images.oss-cn-qingdao.aliyuncs.com/BaseIMG/tuoer.jpg"><meta name=twitter:title content="使用capsule管理k8s多租户（tenants）"><meta name=twitter:description content="Capsule implements a multi-tenant and policy-based environment in your Kubernetes cluster. It is designed as a micro-services-based ecosystem with the minimalist approach, leveraging only on upstream Kubernetes.
+官方文档地址：https://capsule.clastix.io/"><meta name=application-name content="AGou's Blog-2."><meta name=apple-mobile-web-app-title content="AGou's Blog-2."><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/myBlog-2/favicon.png><link rel=icon type=image/png sizes=32x32 href=/myBlog-2/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/myBlog-2/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/><link rel=prev href=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8k8s%E5%AE%B9%E5%99%A8checkpoint%E5%AE%9E%E7%8E%B0%E5%BF%AB%E7%85%A7%E5%8A%9F%E8%83%BD/><link rel=next href=https://agou-ops.cn/myBlog-2/post/%E8%A7%A3%E5%86%B3vps%E9%A2%91%E7%B9%81google%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81ip%E8%A2%AB%E5%A2%99/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/myBlog-2/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"使用capsule管理k8s多租户（tenants）","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/agou-ops.cn\/myBlog-2\/post\/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants\/"},"image":["https:\/\/agou-images.oss-cn-qingdao.aliyuncs.com\/BaseIMG\/tuoer.jpg"],"genre":"posts","keywords":"k8s, capsule, tenants","wordcount":532,"url":"https:\/\/agou-ops.cn\/myBlog-2\/post\/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants\/","datePublished":"2024-12-24T14:49:39+08:00","dateModified":"2024-12-24T14:49:39+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"AGou-ops","logo":"https:\/\/agou-images.oss-cn-qingdao.aliyuncs.com\/BaseIMG\/tuoer.jpg"},"author":{"@type":"Person","name":"AGou-ops"},"description":""}</script></head><body header-desktop=auto header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/myBlog-2/ title="AGou's Blog-2"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>AGou-ops</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/myBlog-2/posts/>所有文章 </a><a class=menu-item href=/myBlog-2/tags/>标签 </a><a class=menu-item href=/myBlog-2/categories/>分类 </a><a class=menu-item href=/myBlog-2/anime/>Anime </a><a class=menu-item href=/myBlog-2/about/>关于 </a><a class=menu-item href=https://github.com/AGou-ops title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select id=language-select-desktop onchange="location=this.value;"><option value=/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/myBlog-2/ title="AGou's Blog-2"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>AGou-ops</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/myBlog-2/posts/>所有文章</a><a class=menu-item href=/myBlog-2/tags/>标签</a><a class=menu-item href=/myBlog-2/categories/>分类</a><a class=menu-item href=/myBlog-2/anime/>Anime</a><a class=menu-item href=/myBlog-2/about/>关于</a><a class=menu-item href=https://github.com/AGou-ops title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a><a href=javascript:void(0); class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select onchange="location=this.value;"><option value=/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">使用capsule管理k8s多租户（tenants）</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/myBlog-2/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>AGou-ops</a></span>&nbsp;<span class=post-category>收录于 <a href=/myBlog-2/categories/k8s/><i class="far fa-folder fa-fw"></i>k8s</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2024-12-24>2024-12-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 532 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#helm快速安装>helm快速安装</a></li><li><a href=#快速开始>快速开始</a></li><li><a href=#附录tenant配置>附录：tenant配置</a></li><li><a href=#参考链接>参考链接</a></li></ul></nav></div></div><div class=content id=content><p><img class=lazyload src=/myBlog-2/svg/loading.min.svg data-src=https://cdn.agou-ops.cn/blog-images/capsule-operator.d853076.ce76636fce3e3130134a6f768700f6f7.svg data-srcset="https://cdn.agou-ops.cn/blog-images/capsule-operator.d853076.ce76636fce3e3130134a6f768700f6f7.svg, https://cdn.agou-ops.cn/blog-images/capsule-operator.d853076.ce76636fce3e3130134a6f768700f6f7.svg 1.5x, https://cdn.agou-ops.cn/blog-images/capsule-operator.d853076.ce76636fce3e3130134a6f768700f6f7.svg 2x" data-sizes=auto alt=https://cdn.agou-ops.cn/blog-images/capsule-operator.d853076.ce76636fce3e3130134a6f768700f6f7.svg title=capsule-operator></p><blockquote><p><strong>Capsule</strong> implements a multi-tenant and policy-based environment in your Kubernetes cluster. It is designed as a micro-services-based ecosystem with the minimalist approach, leveraging only on upstream Kubernetes.</p><p>官方文档地址：<a href=https://capsule.clastix.io/ target=_blank rel="noopener noreffer">https://capsule.clastix.io/</a></p></blockquote><h2 id=helm快速安装>helm快速安装</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>helm repo add projectcapsule https://projectcapsule.github.io/charts
+
+helm install capsule projectcapsule/capsule -n capsule-system --create-namespace
+</code></pre></td></tr></table></div></div><h2 id=快速开始>快速开始</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash><span class=c1># 创建一个租户，租户里面有用户suofeiya</span>
+kubectl create -f - <span class=s>&lt;&lt; EOF
+</span><span class=s>apiVersion: capsule.clastix.io/v1beta2
+</span><span class=s>kind: Tenant
+</span><span class=s>metadata:
+</span><span class=s>  name: tenant
+</span><span class=s>spec:
+</span><span class=s>  owners:
+</span><span class=s>  - name: suofeiya
+</span><span class=s>    kind: User
+</span><span class=s>EOF</span>
+
+<span class=c1># 创建完成之后</span>
+kubectl get tenants
+<span class=c1># 示例输出</span>
+NAME     STATE    NAMESPACE QUOTA   NAMESPACE COUNT   NODE SELECTOR   AGE
+suofeiya Active                     <span class=m>0</span>                                 10s
+</code></pre></td></tr></table></div></div><p>然后使用<a href=https://github.com/projectcapsule/capsule/blob/master/hack/create-user.sh target=_blank rel="noopener noreffer">hack/create-user.sh</a>脚本配置用户证书以及<code>kubeconfig</code>等：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash><span class=c1># 第一个参数为用户，第二个为租户名称</span>
+./create-user.sh suofeiya tenant
+
+<span class=c1># 使用创建出来用户的Context</span>
+<span class=nb>export</span> <span class=nv>KUBECONFIG</span><span class=o>=</span>suofeiya-tenant.kubeconfig
+</code></pre></td></tr></table></div></div><p>使用该context创建命名空间，推荐以租户名称为前缀，中间以空格分割：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>kubectl create ns tenant-demo
+
+kubectl run nginx --image<span class=o>=</span>nginx -n tenant-demo
+</code></pre></td></tr></table></div></div><h2 id=附录tenant配置>附录：tenant配置</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-yaml data-lang=yaml><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>capsule.clastix.io/v1beta1</span><span class=w>
+</span><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Tenant</span><span class=w>
+</span><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>tenants-sample</span><span class=w>
+</span><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>  </span><span class=nt>metadata</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>  </span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>additionalRoleBindings</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>clusterRoleName</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>subjects</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>containerRegistries</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>allowed</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>allowedRegex</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>imagePullPolicies</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>ingressOptions</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>allowedClasses</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>allowed</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>allowedRegex</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>allowedHostnames</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>allowed</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>allowedRegex</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>hostnameCollisionScope</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>limitRanges</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>items</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=nt>limits</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=nt>default</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>          </span><span class=nt>defaultRequest</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>          </span><span class=nt>max</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>          </span><span class=nt>maxLimitRequestRatio</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>          </span><span class=nt>min</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>          </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>namespaceOptions</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>additionalMetadata</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>annotations</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>        </span><span class=nt>labels</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>      </span><span class=nt>quota</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>    </span><span class=nt>networkPolicies</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>items</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=nt>egress</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=nt>ports</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span>- <span class=nt>endPort</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>            </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=l>&lt;nil&gt;</span><span class=w>
+</span><span class=w>            </span><span class=nt>protocol</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>          </span><span class=nt>to</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span>- <span class=nt>ipBlock</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span><span class=nt>cidr</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>              </span><span class=nt>except</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>            </span><span class=nt>namespaceSelector</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>                </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>                </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span><span class=w>                </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>              </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>            </span><span class=nt>podSelector</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>                </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>                </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span><span class=w>                </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>              </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>        </span><span class=nt>ingress</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=nt>from</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span>- <span class=nt>ipBlock</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span><span class=nt>cidr</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>              </span><span class=nt>except</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>            </span><span class=nt>namespaceSelector</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>                </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>                </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span><span class=w>                </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>              </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>            </span><span class=nt>podSelector</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>                </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>                </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span><span class=w>                </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>              </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>          </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span>- <span class=nt>endPort</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>            </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=l>&lt;nil&gt;</span><span class=w>
+</span><span class=w>            </span><span class=nt>protocol</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>podSelector</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>            </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>            </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>          </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>        </span><span class=nt>policyTypes</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>nodeSelector</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>    </span><span class=nt>owners</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>proxySettings</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>operations</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>priorityClasses</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>allowed</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>allowedRegex</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>resourceQuotas</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>items</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=nt>hard</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>        </span><span class=nt>scopeSelector</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span>- <span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>            </span><span class=nt>scopeName</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>            </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>scopes</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>scope</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>serviceOptions</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>additionalMetadata</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>annotations</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>        </span><span class=nt>labels</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>      </span><span class=nt>allowedServices</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>externalName</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>        </span><span class=nt>loadBalancer</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>        </span><span class=nt>nodePort</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=nt>externalIPs</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>allowed</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>forbiddenAnnotations</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>denied</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>deniedRegex</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>forbiddenLabels</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>denied</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>        </span><span class=nt>deniedRegex</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>storageClasses</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>allowed</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>      </span><span class=nt>allowedRegex</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>  </span><span class=nt>status</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>namespaces</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=l>&lt;string&gt;</span><span class=w>
+</span><span class=w>    </span><span class=nt>size</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span><span class=w>    </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=l>&lt;string&gt;</span><span class=w>
+</span></code></pre></td></tr></table></div></div><h2 id=参考链接>参考链接</h2><ul><li><a href=https://capsule.clastix.io/docs/ target=_blank rel="noopener noreffer">Capsule Documentaion</a></li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2024-12-24</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/ data-title=使用capsule管理k8s多租户（tenants） data-hashtags=k8s,capsule,tenants><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/ data-hashtag=k8s><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 Hacker News" data-sharer=hackernews data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/ data-title=使用capsule管理k8s多租户（tenants）><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="分享到 Line" data-sharer=line data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/ data-title=使用capsule管理k8s多租户（tenants）><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/line.svg></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/ data-title=使用capsule管理k8s多租户（tenants） data-ralateuid=AGou-ops><i class="fab fa-weibo fa-fw"></i></a><a href=javascript:void(0); title="分享到 百度" data-sharer=baidu data-url=https://agou-ops.cn/myBlog-2/post/%E4%BD%BF%E7%94%A8capsule%E7%AE%A1%E7%90%86k8s%E5%A4%9A%E7%A7%9F%E6%88%B7tenants/ data-title=使用capsule管理k8s多租户（tenants）><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/baidu.svg></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/myBlog-2/tags/k8s/>k8s</a>,&nbsp;<a href=/myBlog-2/tags/capsule/>capsule</a>,&nbsp;<a href=/myBlog-2/tags/tenants/>tenants</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>返回</a></span>&nbsp;|&nbsp;<span><a href=/myBlog-2/>主页</a></span></section></div><div class=post-nav><a href=/myBlog-2/post/%E4%BD%BF%E7%94%A8k8s%E5%AE%B9%E5%99%A8checkpoint%E5%AE%9E%E7%8E%B0%E5%BF%AB%E7%85%A7%E5%8A%9F%E8%83%BD/ class=prev rel=prev title="使用k8s CRI的checkpoint实现容器快照功能"><i class="fas fa-angle-left fa-fw"></i>使用k8s CRI的checkpoint实现容器快照功能</a>
+<a href=/myBlog-2/post/%E8%A7%A3%E5%86%B3vps%E9%A2%91%E7%B9%81google%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81ip%E8%A2%AB%E5%A2%99/ class=next rel=next title=解决VPS频繁Google人机验证（IP被ban）>解决VPS频繁Google人机验证（IP被ban）<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=utterances></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://utteranc.es/>Utterances</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><a href=https://agou-ops.github.io/-/ target=_blank rel="noopener noreferrer" style=color:red>【AGou-ops.cn】</a> 备份站点</div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.75.1">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2018 - 2024</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/myBlog-2/ target=_blank>AGou-ops</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span><span class=icp-splitter>&nbsp;|&nbsp;</span><br class=icp-br><span class=icp>鲁ICP备19050296号-2</span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"AGou-ops/comments"}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"5M8VQRD7W9","algoliaIndex":"blog-2","algoliaSearchKey":"2fcdbd0ce638664e7a28cc64939603b9","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"twemoji":true};</script><script type=text/javascript src=/myBlog-2/js/theme.min.js></script></body></html>
